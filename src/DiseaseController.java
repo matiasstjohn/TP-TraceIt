@@ -1,12 +1,13 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class diseaseController {
 
-    private List<String> diseases;
+public class DiseaseController {
+
+    private List<Disease> diseases;
     private List<String> symptoms;
 
-    public diseaseController(){
+    public DiseaseController(){ // se rellenan con la info de los txt
         diseases = new ArrayList<>();
         symptoms = new ArrayList<>();
     }
@@ -25,7 +26,5 @@ public class diseaseController {
     public void removeSymptom(String symptom){
         symptoms.remove(symptom);
     }
-
-
 
 }

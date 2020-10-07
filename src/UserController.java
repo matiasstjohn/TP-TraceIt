@@ -6,8 +6,7 @@ public class UserController {
     private List<Citizen> citizens;
     private List<Administrator> administrators;
 
-
-    public UserController(){
+    public UserController(){  // se rellenan con la info de los txt
         citizens = new ArrayList<>();
         administrators = new ArrayList<>();
     }
@@ -19,8 +18,6 @@ public class UserController {
     public void addAdministrator(Administrator administrator){
         administrators.add(administrator);
     }
-
-
 
     public void removeCitizen(Citizen citizen){
         citizens.remove(citizen);

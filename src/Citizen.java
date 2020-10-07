@@ -8,8 +8,10 @@ public class Citizen {
     boolean blocked;
     List<String> symptoms;
 
-    public Citizen(String phoneNUmber, String cuil){
-        this.phoneNumber = phoneNUmber;
+    //como guardar las relaciones y lo symptoms?
+
+    public Citizen(String phoneNumber, String cuil){
+        this.phoneNumber = phoneNumber;
         this.cuil = cuil;
         blocked = false;
         symptoms = new ArrayList<>();
