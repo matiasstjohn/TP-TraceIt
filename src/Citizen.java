@@ -6,8 +6,6 @@ public class Citizen {
     private String phoneNumber;
     private String cuil;
     boolean blocked;
-
-
     List<String> symptoms;
 
     public Citizen(String phoneNUmber, String cuil){
