@@ -10,6 +10,14 @@ public class Citizen {
 
     //como guardar las relaciones y lo symptoms?
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getCuil() {
+        return cuil;
+    }
+
     public Citizen(String phoneNumber, String cuil){
         this.phoneNumber = phoneNumber;
         this.cuil = cuil;
@@ -23,6 +31,10 @@ public class Citizen {
 
     public void removeSymptom(String symptom){
         symptoms.remove(symptom);
+    }
+
+    public List<String> getSymptoms() {
+        return symptoms;
     }
 
     // indicar relacion y aceptar relacion

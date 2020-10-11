@@ -2,23 +2,19 @@ public class Administrator {
 
     private String userName;
     private String password;
-    private UserController userController;
-    private DiseaseController diseaseController;
 
-    public Administrator(String userName, String password, UserController userController, DiseaseController diseaseController) {
+    public Administrator(String userName, String password) {
         this.userName = userName;
         this.password = password;
-        this.userController = userController;
-        this.diseaseController = diseaseController;
     }
 
-    public Administrator createAdministrator(String userName, String password){
-        Administrator administrator = new Administrator(userName, password, this.userController, this.diseaseController);
+    public Administrator createAdministrator(String userName, String password, UserController userController){
+        Administrator administrator = new Administrator(userName, password);
         userController.addAdministrator(administrator);
         return administrator;
     }
 
-    public void createSymptoms(String symptoms){
+    public void createSymptoms(String symptoms, DiseaseController diseaseController){
         diseaseController.addSymptom(symptoms);
     }
 
@@ -27,6 +23,11 @@ public class Administrator {
     }
 
 
+    public String getUserName() {
+        return userName;
+    }
 
-
+    public String getPassword(){
+        return password;
+    }
 }
