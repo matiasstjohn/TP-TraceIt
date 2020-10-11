@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserLogin {
@@ -22,6 +23,50 @@ public class UserLogin {
         return null;
     }
 
+    public Citizen searchCitizenByCuil(UserController userController, String cuil){
+        List<Citizen> citizens = userController.getCitizens();
+        for (int i = 0; i < citizens.size(); i++) {
+            if(citizens.get(i).getCuil().equals(cuil)){
+                return citizens.get(i);
+            }
+        }
+        return null;
+    }
+
+    public void displayMeetingRequests(Citizen citizen, UserController userController){
+        List<MeetingRequest> meetingRequests = citizen.getMeetingRequests();
+        for (int i = 0; i < meetingRequests.size(); i++) {
+            System.out.println("" + (i+1) + "." + meetingRequests.get(i).getSender().getCuil());
+        }
+    }
+
+    public void displayAttendedMeetings(Citizen citizen, UserController userController){
+        List<MeetingRequest> meetings = citizen.getMeetings();
+        for (int i = 0; i < meetings.size(); i++) {
+            System.out.println("Date: " + meetings.get(i).getMeeting().getDate() + ". Participants: " + meetings.get(i).getMeeting().getParticipantsCuil());
+        }
+    }
+
+    public void sendMeetingRequestByCuil(Citizen citizen, UserController userController){
+        List<Citizen> citizens = userController.getCitizens();
+        List<Citizen> requestCitizens = new ArrayList<>();
+        int size = Scanner.getInt("Indique la cantidad de invitados: ");
+        int date = Scanner.getInt("Indique la fecha: ");
+        for (int i = 0; i < size; i++) {
+            String cuil = Scanner.getString("Ingrese el cuil del invitado " + (i+1) + ": ");
+            Citizen aCitizen = searchCitizenByCuil(userController, cuil);
+            requestCitizens.add(aCitizen);
+        }
+        citizen.createMeetingRequest(date, requestCitizens);
+    }
+
+    public void checkIfCitizenBlock(Citizen citizen){
+        citizen.addRejecetedRequest();
+        if(citizen.getRejectedRequests() >= 5){
+            citizen.blockUser();
+        }
+    }
+
     public void manageCitizen(UserController userController){
 
         Citizen citizen = searchCitizen(userController);
@@ -33,6 +78,7 @@ public class UserLogin {
             System.out.println("El usuario se encuentra bloqueado.");
             return;
         }
+
 
         while (true) {
             citizenMenu();
@@ -52,9 +98,23 @@ public class UserLogin {
                     }
                     break;
                 case 4:
-                    System.out.println("Opcion no disponible todavia.");
+                    displayMeetingRequests(citizen, userController);
+                    int accept = Scanner.getInt("Indique una invitacion: ");
+                    int action = Scanner.getInt("Seleccione 1 para aceptar o 2 para rechazar: ");
+                    if(action ==  1){
+                        citizen.acceptMeetingRequest(accept - 1);
+                    }else if(action == 2){
+                        checkIfCitizenBlock(citizen.getMeetingRequests().get(accept - 1).getSender());
+                        citizen.declineMeetingRequest(accept - 1);
+                    }
                     break;
                 case 5:
+                    sendMeetingRequestByCuil(citizen, userController);
+                    break;
+                case 6:
+                    displayAttendedMeetings(citizen, userController);
+                    break;
+                case 7:
                     return;
                  default :
                      break;
@@ -62,6 +122,8 @@ public class UserLogin {
             }
         }
     }
+
+
 
     public void citizenInterfaze(UserController userController){
         while (true) {
@@ -96,8 +158,10 @@ public class UserLogin {
         System.out.println("1. Add Symptom");
         System.out.println("2. Remove symptom");
         System.out.println("3. My symptoms");
-        System.out.println("4. Notify Relation");
-        System.out.println("5. Log out");
+        System.out.println("4. Display meeting requests");
+        System.out.println("5. Send meeting requests");
+        System.out.println("6. Display attended meetings");
+        System.out.println("7. Log out");
         System.out.println("************");
     }
 

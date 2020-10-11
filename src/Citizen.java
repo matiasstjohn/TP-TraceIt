@@ -7,6 +7,9 @@ public class Citizen {
     private String cuil;
     private boolean blocked;
     List<String> symptoms;
+    List<MeetingRequest> meetings; //aceptadas
+    List<MeetingRequest> meetingRequests; //por aceptar
+    private int rejectedRequests;
 
     //como guardar las relaciones y lo symptoms?
 
@@ -15,6 +18,48 @@ public class Citizen {
         this.cuil = cuil;
         blocked = false;
         symptoms = new ArrayList<>();
+        meetings = new ArrayList<MeetingRequest>(); // requests aceptadas
+        meetingRequests = new ArrayList<MeetingRequest>(); // requests por aceptar
+        rejectedRequests = 0;
+    }
+
+    public MeetingRequest createMeetingRequest(int date,  List<Citizen> citizens){
+        MeetingRequest aMeetingRequest = new MeetingRequest(this, citizens, date);
+        meetings.add(aMeetingRequest);
+        sendMeetingRequest(aMeetingRequest);
+        return aMeetingRequest;
+    }
+
+    public void sendMeetingRequest(MeetingRequest meetingRequest){
+        for (int i = 0; i < meetingRequest.getParticipants().size(); i++) {
+            meetingRequest.getParticipants().get(i).reciveMeetingRequest(meetingRequest);
+        }
+    }
+
+    public void reciveMeetingRequest(MeetingRequest meetingRequest){
+        meetingRequests.add(meetingRequest);
+    }
+
+    public void acceptMeetingRequest(int i){ //elige cual meeting aceptar
+        if(i > meetingRequests.size()){
+            return;
+        }
+        MeetingRequest meetingRequest = meetingRequests.get(i);
+        meetings.add(meetingRequest);
+        meetingRequests.remove(i);
+        meetingRequest.addParticipantToMeeting(this);
+    }
+
+    public void declineMeetingRequest(int i){
+        meetingRequests.remove(i);
+    }
+
+    public List<MeetingRequest> getMeetingRequests(){
+        return meetingRequests;
+    }
+
+    public List<MeetingRequest> getMeetings() {
+        return meetings;
     }
 
     public String getPhoneNumber() {
@@ -23,6 +68,14 @@ public class Citizen {
 
     public String getCuil() {
         return cuil;
+    }
+
+    public int getRejectedRequests(){
+        return rejectedRequests;
+    }
+
+    public void addRejecetedRequest(){
+        rejectedRequests++;
     }
 
     public boolean isBlocked(){
@@ -48,13 +101,6 @@ public class Citizen {
     public List<String> getSymptoms() {
         return symptoms;
     }
-
-    // indicar relacion y aceptar relacion
-
-    /*
-    cuando un citizen rechaza se le suma uno al int del que envio la solicitud y se chequea si llego a 5,
-     si llego a 5 se bloquea y se agrega a una lista para ser auditado por un admin
-     */
 
 
 }

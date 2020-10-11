@@ -18,10 +18,13 @@ public class Administrator {
         diseaseController.addSymptom(symptoms);
     }
 
+    public void unblockCitizen(Citizen citizen){
+        citizen.unBlockUser();
+    }
+
     public String getName(){
         return userName;
     }
-
 
     public String getUserName() {
         return userName;

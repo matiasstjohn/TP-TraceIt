@@ -38,7 +38,7 @@ public class AdminLogin {
                     symptomList(diseaseController);
                     break;
                 case 4:
-                    auditUsers(userController);
+                    auditUsers(administrator, userController);
                     break;
                 case 5:
                     return;
@@ -66,7 +66,7 @@ public class AdminLogin {
         }
     }
 
-    public void auditUsers(UserController userController){
+    public void auditUsers(Administrator administrator, UserController userController){
         List<Citizen> citizens = userController.getCitizens();
         List<Citizen> blockedCitizens = new ArrayList<>();
         for (int i = 0; i < citizens.size(); i++) {
@@ -74,11 +74,14 @@ public class AdminLogin {
                 blockedCitizens.add(citizens.get(i));
             }
         }
+        if(blockedCitizens.isEmpty()){
+            return;
+        }
         for (int i = 0; i < blockedCitizens.size(); i++) {
             System.out.println("" + (i+1) + ". " + blockedCitizens.get(i).getCuil());
         }
         int unBlock = Scanner.getInt("Seleccione cual desea desbloquear: ");
-        blockedCitizens.get(unBlock - 1).unBlockUser();
+        administrator.unblockCitizen(blockedCitizens.get(unBlock - 1));
     }
 
     public void adminMenu(){
