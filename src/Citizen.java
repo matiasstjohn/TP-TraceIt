@@ -5,10 +5,17 @@ public class Citizen {
 
     private String phoneNumber;
     private String cuil;
-    boolean blocked;
+    private boolean blocked;
     List<String> symptoms;
 
     //como guardar las relaciones y lo symptoms?
+
+    public Citizen(String phoneNumber, String cuil){
+        this.phoneNumber = phoneNumber;
+        this.cuil = cuil;
+        blocked = false;
+        symptoms = new ArrayList<>();
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;
@@ -18,11 +25,16 @@ public class Citizen {
         return cuil;
     }
 
-    public Citizen(String phoneNumber, String cuil){
-        this.phoneNumber = phoneNumber;
-        this.cuil = cuil;
+    public boolean isBlocked(){
+        return blocked;
+    }
+
+    public void blockUser(){
+        blocked = true;
+    }
+
+    public void unBlockUser(){
         blocked = false;
-        symptoms = new ArrayList<>();
     }
 
     public void addSymptom(String symptom){

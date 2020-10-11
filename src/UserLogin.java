@@ -29,6 +29,9 @@ public class UserLogin {
         if(citizen == null){
             System.out.println("No se encontro el usuario. Intente Nuevamente");
             return;
+        }else if(citizen.isBlocked()){
+            System.out.println("El usuario se encuentra bloqueado.");
+            return;
         }
 
         while (true) {
