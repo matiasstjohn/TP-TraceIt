@@ -42,7 +42,6 @@ public class UserController {
         return true;
     }
 
-
     public boolean unBanUser(Citizen citizen){
         //seria return.citizen = false
         return false;
