@@ -6,38 +6,53 @@ import java.util.List;
 public class UserController {
 
     private List<Citizen> citizens;
-    private List<Administrator> administrators;
 
     public UserController(){  // se rellenan con la info de los txt
         citizens = new ArrayList<>();
-        administrators = new ArrayList<>();
+    }
+
+    public List<Citizen> getCitizens() {
+        return citizens;
     }
 
     public void addCitizen(Citizen citizen){
         citizens.add(citizen);
     }
 
-    public void addAdministrator(Administrator administrator){
-        administrators.add(administrator);
+    public List<Citizen> getBlockedCitizens(){
+        List<Citizen> blockedCitizens = new ArrayList<>();
+        for (int i = 0; i < citizens.size(); i++) {
+            if(citizens.get(i).isBlocked()){
+                blockedCitizens.add(citizens.get(i));
+            }
+        }
+        return blockedCitizens;
     }
 
-    public void removeCitizen(Citizen citizen){
-        citizens.remove(citizen);
+    public Citizen getCitizenByCuil(String cuil){
+        for (int i = 0; i < citizens.size(); i++) {
+            if(citizens.get(i).getCuil().equals(cuil)){
+                return citizens.get(i);
+            }
+        }
+        return null;
     }
 
-    public void removeAdministrator(Administrator administrator){
-        administrators.remove(administrator);
-    }
 
-    // getters
 
-    public List<Citizen> getCitizens() {
-        return citizens;
-    }
 
-    public List<Administrator> getAdministrators() {
-        return administrators;
-    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     public boolean banUser(Citizen citizen){
         //seria return citizen.blocked = true

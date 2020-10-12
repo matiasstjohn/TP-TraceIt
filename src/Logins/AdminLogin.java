@@ -1,6 +1,7 @@
 package Logins;
 
 import Events.DiseaseController;
+import Users.AdminController;
 import Users.Administrator;
 import Users.Citizen;
 import Users.UserController;
@@ -11,10 +12,10 @@ import java.util.List;
 
 public class AdminLogin {
 
-    public Administrator searchAdmin(UserController userController){
+    public Administrator searchAdmin(AdminController adminController){
         String userName = Scanner.getString("Ingrese nombre de usuario: ");
         String password = Scanner.getString("Ingrese contrasenia: ");
-        List<Administrator> administrators = userController.getAdministrators();
+        List<Administrator> administrators = adminController.getAdministrators();
         for (int i = 0; i < administrators.size(); i++) {
             if(administrators.get(i).getUserName().equals(userName) && administrators.get(i).getPassword().equals(password)){
                 return administrators.get(i);
@@ -23,9 +24,9 @@ public class AdminLogin {
         return null;
     }
 
-    public void adminInterfaze(UserController userController, DiseaseController diseaseController){
+    public void adminInterfaze(AdminController adminController, UserController userController, DiseaseController diseaseController){
 
-       Administrator administrator = searchAdmin(userController);
+       Administrator administrator = searchAdmin(adminController);
 
         if(administrator == null){
             System.out.println("No se encontro el usuario. Intente Nuevamente");
@@ -37,10 +38,10 @@ public class AdminLogin {
             int a = Scanner.getInt("Seleccione la accion desea realizar: ");
             switch (a) {
                 case 1:
-                    createAdmin(administrator, userController);
+                    createAdmin(administrator, adminController);
                     break;
                 case 2:
-                    createSymptom(administrator,userController,diseaseController);
+                    createSymptom(administrator,adminController,diseaseController);
                     break;
                 case 3:
                     symptomList(diseaseController);
@@ -57,13 +58,13 @@ public class AdminLogin {
         }
     }
 
-    public void createAdmin(Administrator administrator, UserController userController){
+    public void createAdmin(Administrator administrator, AdminController adminController){
         String userName = Scanner.getString("Ingrese nombre de usuario: ");
         String password = Scanner.getString("Ingrese contrasenia: ");
-        administrator.createAdministrator(userName, password, userController);
+        administrator.createAdministrator(userName, password, adminController);
     }
 
-    public void createSymptom(Administrator administrator, UserController userController, DiseaseController diseaseController){
+    public void createSymptom(Administrator administrator, AdminController adminController, DiseaseController diseaseController){
         String symptom = Scanner.getString("Ingrese sintoma: ");
         administrator.createSymptoms(symptom, diseaseController);
     }
@@ -76,12 +77,7 @@ public class AdminLogin {
 
     public void auditUsers(Administrator administrator, UserController userController){
         List<Citizen> citizens = userController.getCitizens();
-        List<Citizen> blockedCitizens = new ArrayList<>();
-        for (int i = 0; i < citizens.size(); i++) {
-            if(citizens.get(i).isBlocked()){
-                blockedCitizens.add(citizens.get(i));
-            }
-        }
+        List<Citizen> blockedCitizens = userController.getBlockedCitizens();
         if(blockedCitizens.isEmpty()){
             return;
         }

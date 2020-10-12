@@ -11,9 +11,17 @@ public class Administrator {
         this.password = password;
     }
 
-    public Administrator createAdministrator(String userName, String password, UserController userController){
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getPassword(){
+        return password;
+    }
+
+    public Administrator createAdministrator(String userName, String password, AdminController adminController){
         Administrator administrator = new Administrator(userName, password);
-        userController.addAdministrator(administrator);
+        adminController.addAdministrator(administrator);
         return administrator;
     }
 
@@ -25,15 +33,5 @@ public class Administrator {
         citizen.unBlockUser();
     }
 
-    public String getName(){
-        return userName;
-    }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getPassword(){
-        return password;
-    }
 }
