@@ -13,8 +13,8 @@ import java.util.List;
 public class AdminLogin {
 
     public Administrator searchAdmin(AdminController adminController){
-        String userName = Scanner.getString("Ingrese nombre de usuario: ");
-        String password = Scanner.getString("Ingrese contrasenia: ");
+        String userName = Scanner.getString("Enter username: ");
+        String password = Scanner.getString("Enter password: ");
         List<Administrator> administrators = adminController.getAdministrators();
         for (int i = 0; i < administrators.size(); i++) {
             if(administrators.get(i).getUserName().equals(userName) && administrators.get(i).getPassword().equals(password)){
@@ -29,13 +29,13 @@ public class AdminLogin {
        Administrator administrator = searchAdmin(adminController);
 
         if(administrator == null){
-            System.out.println("No se encontro el usuario. Intente Nuevamente");
+            System.out.println("User was not found. Try again.");
             return;
         }
 
         while (true) {
             adminMenu();
-            int a = Scanner.getInt("Seleccione la accion desea realizar: ");
+            int a = Scanner.getInt("Select the action you want to preform: ");
             switch (a) {
                 case 1:
                     createAdmin(administrator, adminController);
@@ -59,13 +59,13 @@ public class AdminLogin {
     }
 
     public void createAdmin(Administrator administrator, AdminController adminController){
-        String userName = Scanner.getString("Ingrese nombre de usuario: ");
-        String password = Scanner.getString("Ingrese contrasenia: ");
+        String userName = Scanner.getString("Enter user name: ");
+        String password = Scanner.getString("Enter password: ");
         administrator.createAdministrator(userName, password, adminController);
     }
 
     public void createSymptom(Administrator administrator, AdminController adminController, DiseaseController diseaseController){
-        String symptom = Scanner.getString("Ingrese sintoma: ");
+        String symptom = Scanner.getString("Enter symptom: ");
         administrator.createSymptoms(symptom, diseaseController);
     }
 
@@ -84,7 +84,10 @@ public class AdminLogin {
         for (int i = 0; i < blockedCitizens.size(); i++) {
             System.out.println("" + (i+1) + ". " + blockedCitizens.get(i).getCuil());
         }
-        int unBlock = Scanner.getInt("Seleccione cual desea desbloquear: ");
+        int unBlock = Scanner.getInt("Select a user to unblock or press 0 to go back: ");
+        if(unBlock == 0){
+            return;
+        }
         administrator.unblockCitizen(blockedCitizens.get(unBlock - 1));
     }
 

@@ -9,8 +9,16 @@ import Users.Citizen;
 import Users.UserController;
 import Util.Scanner;
 
+import java.util.Date;
+
 public class TesterNuevo {
     public static void main(String[] args) {
+
+        //PRUEBA DE LA CLASE DATE
+        Date date = new Date();
+        System.out.println("Fecha: " + date.getDate() + "/" + date.getMonth() + ". Hora: " + date.getHours() + ":" + date.getMinutes());
+        //PRUEBA DE LA CLASE DATE
+
 
         UserController userController = new UserController();
         AdminController adminController = new AdminController();
@@ -37,7 +45,7 @@ public class TesterNuevo {
         //blockedCitizen3.blockUser();
 
         while(true){
-            int action = Scanner.getInt("Seleccione 1 para ingresar como ciudadano, 2 para ingresar como administrador o 3 para salir: ");
+            int action = Scanner.getInt("Select 1 to enter as a citizen, 2 to enter as an administrator or 3 to exit: ");
             if(action == 1){
                 userLogin.citizenInterfaze(userController);
             }else if(action == 2){

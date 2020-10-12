@@ -9,8 +9,10 @@ public class Citizen {
     private String cuil;
     private boolean blocked;
     private List<String> symptoms;
-    private List<MeetingRequest> meetings; //aceptadas
-    private List<MeetingRequest> meetingRequests; //por aceptar
+    //aceptadas
+    private List<MeetingRequest> meetings;
+    //por aceptar
+    private List<MeetingRequest> meetingRequests;
     private int rejectedRequests;
 
     public Citizen(String phoneNumber, String cuil){

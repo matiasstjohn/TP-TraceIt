@@ -13,7 +13,7 @@ public class UserLogin {
     public void citizenInterfaze(UserController userController){
         while (true) {
             loginMenu();
-            int a = Scanner.getInt("Seleccione la accion desea realizar: ");
+            int a = Scanner.getInt("Select de action you want to perform: ");
             switch (a) {
                 case 1:
                     createCitizen(userController);
@@ -34,23 +34,23 @@ public class UserLogin {
         Citizen citizen = searchCitizen(userController);
 
         if(citizen == null){
-            System.out.println("No se encontro el usuario. Intente Nuevamente");
+            System.out.println("User was not found. Try again.");
             return;
         }else if(citizen.isBlocked()){
-            System.out.println("El usuario se encuentra bloqueado.");
+            System.out.println("The user is currently blocked.");
             return;
         }
 
         while (true) {
             citizenMenu();
-            int a = Scanner.getInt("Seleccione la accion desea realizar: ");
+            int a = Scanner.getInt("Select de action you want to perform:: ");
             switch (a) {
                 case 1:
-                    String symptom = Scanner.getString("Sintoma presenciado: ");
+                    String symptom = Scanner.getString("Preceded symptom: ");
                     citizen.addSymptom(symptom);
                     break;
                 case 2:
-                    String removeSymptom = Scanner.getString("Sintoma que desea remover: ");
+                    String removeSymptom = Scanner.getString("Remove symptom: ");
                     citizen.removeSymptom(removeSymptom);
                     break;
                 case 3:
@@ -79,7 +79,7 @@ public class UserLogin {
 
 
     public Citizen createCitizen(UserController userController){
-        String phoneNumber = Scanner.getString("Numero de telefono: ");
+        String phoneNumber = Scanner.getString("Phone Number: ");
         String cuil = Scanner.getString("Cuil: ");
         Citizen citizen = new Citizen(phoneNumber, cuil);
         userController.addCitizen(citizen);
@@ -87,8 +87,8 @@ public class UserLogin {
     }
 
     public Citizen searchCitizen(UserController userController){
-        String phoneNumber = Scanner.getString("Ingrese numero de telefono: ");
-        String cuil = Scanner.getString("Ingrese cuil: ");
+        String phoneNumber = Scanner.getString("Enter your phone number: ");
+        String cuil = Scanner.getString("Enter your cuil: ");
         List<Citizen> citizens = userController.getCitizens();
         for (int i = 0; i < citizens.size(); i++) {
             if(citizens.get(i).getPhoneNumber().equals(phoneNumber) && citizens.get(i).getCuil().equals(cuil)){
@@ -103,8 +103,8 @@ public class UserLogin {
         for (int i = 0; i < meetingRequests.size(); i++) {
             System.out.println("" + (i+1) + "." + meetingRequests.get(i).getSender().getCuil());
         }
-        int accept = Scanner.getInt("Indique una invitacion: ");
-        int action = Scanner.getInt("Seleccione 1 para aceptar o 2 para rechazar: ");
+        int accept = Scanner.getInt("Select a request: ");
+        int action = Scanner.getInt("Select 1 to accept or 2 to decline: ");
         if(action ==  1){
             citizen.acceptMeetingRequest(accept - 1);
         }else if(action == 2){
@@ -122,10 +122,10 @@ public class UserLogin {
 
     public void sendMeetingRequestByCuil(Citizen citizen, UserController userController){
         List<Citizen> requestCitizens = new ArrayList<>();
-        int size = Scanner.getInt("Indique la cantidad de invitados: ");
-        int date = Scanner.getInt("Indique la fecha: ");
+        int size = Scanner.getInt("Enter the amount of people: ");
+        int date = Scanner.getInt("Enter the date: ");
         for (int i = 0; i < size; i++) {
-            String cuil = Scanner.getString("Ingrese el cuil del invitado " + (i+1) + ": ");
+            String cuil = Scanner.getString("Enter guests cuil " + (i+1) + ": ");
             Citizen aCitizen = userController.getCitizenByCuil(cuil);
             requestCitizens.add(aCitizen);
         }
