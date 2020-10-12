@@ -1,3 +1,10 @@
+package Logins;
+
+import Users.Citizen;
+import Users.MeetingRequest;
+import Users.UserController;
+import Util.Scanner;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,8 +130,6 @@ public class UserLogin {
         }
     }
 
-
-
     public void citizenInterfaze(UserController userController){
         while (true) {
             loginMenu();
@@ -142,7 +147,6 @@ public class UserLogin {
                     break;
             }
         }
-
     }
 
     public void loginMenu(){

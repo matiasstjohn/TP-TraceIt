@@ -1,3 +1,13 @@
+package Main;
+
+import Events.DiseaseController;
+import Logins.AdminLogin;
+import Logins.UserLogin;
+import Users.Administrator;
+import Users.Citizen;
+import Users.UserController;
+import Util.Scanner;
+
 public class TesterNuevo {
     public static void main(String[] args) {
 

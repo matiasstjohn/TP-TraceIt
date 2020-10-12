@@ -1,3 +1,11 @@
+package Logins;
+
+import Events.DiseaseController;
+import Users.Administrator;
+import Users.Citizen;
+import Users.UserController;
+import Util.Scanner;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,7 +101,5 @@ public class AdminLogin {
         System.out.println("5. Save and exit");
         System.out.println("************");
     }
-
-
 
 }

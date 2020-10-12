@@ -1,3 +1,6 @@
+package Users;
+import Events.DiseaseController;
+
 public class Administrator {
 
     private String userName;

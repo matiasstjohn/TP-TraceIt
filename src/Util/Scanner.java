@@ -1,3 +1,5 @@
+package Util;
+
 /**
  * Scans for different types of user input in the console.
  */

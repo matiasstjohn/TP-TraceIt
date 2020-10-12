@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+package Users;
+
 import java.util.List;
 
 public class MeetingRequest {

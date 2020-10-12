@@ -1,10 +1,14 @@
+package Users;
+
+import Users.Citizen;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Meeting {
 
     // guarda solo cuando te viste por ultima ves porque de ahi se calculan las 48 horas
-    int date; // se puede cambiar a objetod date
+    int date; // se puede cambiar a objeto date
     List<Citizen> participants;
 
     public Meeting(int date) {

@@ -1,3 +1,5 @@
+package Users;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,12 +8,10 @@ public class Citizen {
     private String phoneNumber;
     private String cuil;
     private boolean blocked;
-    List<String> symptoms;
-    List<MeetingRequest> meetings; //aceptadas
-    List<MeetingRequest> meetingRequests; //por aceptar
+    private List<String> symptoms;
+    private List<MeetingRequest> meetings; //aceptadas
+    private List<MeetingRequest> meetingRequests; //por aceptar
     private int rejectedRequests;
-
-    //como guardar las relaciones y lo symptoms?
 
     public Citizen(String phoneNumber, String cuil){
         this.phoneNumber = phoneNumber;
@@ -23,7 +23,7 @@ public class Citizen {
         rejectedRequests = 0;
     }
 
-    public MeetingRequest createMeetingRequest(int date,  List<Citizen> citizens){
+    public MeetingRequest createMeetingRequest(int date, List<Citizen> citizens){
         MeetingRequest aMeetingRequest = new MeetingRequest(this, citizens, date);
         meetings.add(aMeetingRequest);
         sendMeetingRequest(aMeetingRequest);
