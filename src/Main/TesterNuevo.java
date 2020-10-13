@@ -38,7 +38,7 @@ public class TesterNuevo {
 
         Citizen blockedCitizen3 = new Citizen("ccc","ccc");
         userController.addCitizen(blockedCitizen3);
-        //blockedCitizen3.blockUser();
+        blockedCitizen3.blockUser();
 
         /*
         Menu para seleccionar si se quiere ingresar al userLogin, al adminLogin o salir del programa
