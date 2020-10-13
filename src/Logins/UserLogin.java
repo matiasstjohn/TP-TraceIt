@@ -8,8 +8,16 @@ import Util.Scanner;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+Esta clase funciona como menu de los citizens
+ */
+
 public class UserLogin {
 
+    /*
+    Primer menu al seleccionar que se quiere ingresar como citizen.
+    Da la opcion de crear una cuenta o de ingresar a una ya creada
+     */
     public void citizenInterfaze(UserController userController){
         while (true) {
             loginMenu();
@@ -29,10 +37,15 @@ public class UserLogin {
         }
     }
 
+    /*
+    Menu al seleccionar que se desea iniciar sesion como ciudadano
+     */
     public void manageCitizen(UserController userController){
 
+        //Busca un ciudadano
         Citizen citizen = searchCitizen(userController);
 
+        //Condiciones para que el citizen pueda acceder
         if(citizen == null){
             System.out.println("User was not found. Try again.");
             return;
@@ -40,10 +53,12 @@ public class UserLogin {
             System.out.println("The user is currently blocked.");
             return;
         }
-
+        /*
+        Se despliega un menu para que el citizen elija que accion desea realizar
+         */
         while (true) {
             citizenMenu();
-            int a = Scanner.getInt("Select de action you want to perform:: ");
+            int a = Scanner.getInt("Select de action you want to perform: ");
             switch (a) {
                 case 1:
                     String symptom = Scanner.getString("Preceded symptom: ");
@@ -77,7 +92,10 @@ public class UserLogin {
     }
 
 
-
+    /*
+    Crea un usuario citizen a partir de un phone number y un numero de cuil
+    Luego lo agrega a la lista de citizens
+     */
     public Citizen createCitizen(UserController userController){
         String phoneNumber = Scanner.getString("Phone Number: ");
         String cuil = Scanner.getString("Cuil: ");
@@ -86,6 +104,9 @@ public class UserLogin {
         return citizen;
     }
 
+    /*
+    Busca un citizen a partir de su phone number y su cil
+     */
     public Citizen searchCitizen(UserController userController){
         String phoneNumber = Scanner.getString("Enter your phone number: ");
         String cuil = Scanner.getString("Enter your cuil: ");
@@ -98,6 +119,9 @@ public class UserLogin {
         return null;
     }
 
+    /*
+    Muestra las meeting requests de un citizen y le da la opcion de aceptarla o rechazarla
+     */
     public void displayMeetingRequests(Citizen citizen, UserController userController){
         List<MeetingRequest> meetingRequests = citizen.getMeetingRequests();
         for (int i = 0; i < meetingRequests.size(); i++) {
@@ -113,6 +137,9 @@ public class UserLogin {
         }
     }
 
+    /*
+    Muestra las meetings a las que un citizen asistio
+     */
     public void displayAttendedMeetings(Citizen citizen, UserController userController){
         List<MeetingRequest> meetings = citizen.getMeetings();
         for (int i = 0; i < meetings.size(); i++) {
@@ -120,6 +147,10 @@ public class UserLogin {
         }
     }
 
+    /*
+    Le permite a un citizen mandar una meeting request ingresando la cantidad de gente, la fecha(por ahora es un int)
+    y los nummero de cuil de las personas que asistieron
+     */
     public void sendMeetingRequestByCuil(Citizen citizen, UserController userController){
         List<Citizen> requestCitizens = new ArrayList<>();
         int size = Scanner.getInt("Enter the amount of people: ");
@@ -132,6 +163,11 @@ public class UserLogin {
         citizen.createMeetingRequest(date, requestCitizens);
     }
 
+    /*
+    se  ejecuta si alguien rechaza una meeting request
+    suma 1  a las rejected requests del citizen que envio la request
+    y luego si este llego a 5 requests rechazadas lo bloquea
+     */
     public void checkIfCitizenBlock(Citizen citizen){
         citizen.addRejecetedRequest();
         if(citizen.getRejectedRequests() >= 5){
@@ -139,6 +175,7 @@ public class UserLogin {
         }
     }
 
+    //menu
     public void loginMenu(){
         System.out.println("************");
         System.out.println("1. create account");
@@ -147,6 +184,7 @@ public class UserLogin {
         System.out.println("************");
     }
 
+    //menu
     public void citizenMenu(){
         System.out.println("************");
         System.out.println("1. Add Symptom");

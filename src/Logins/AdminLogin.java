@@ -12,6 +12,9 @@ import java.util.List;
 
 public class AdminLogin {
 
+    /*
+    Busca un administrador pasandole un usuario y su contraseña
+     */
     public Administrator searchAdmin(AdminController adminController){
         String userName = Scanner.getString("Enter username: ");
         String password = Scanner.getString("Enter password: ");
@@ -24,15 +27,21 @@ public class AdminLogin {
         return null;
     }
 
+    /*
+    Menu de los administradores
+     */
     public void adminInterfaze(AdminController adminController, UserController userController, DiseaseController diseaseController){
 
+        //busca un administrador (es el metodo de arriba)
        Administrator administrator = searchAdmin(adminController);
 
+       //condiciones para que el admin pueda entrar
         if(administrator == null){
             System.out.println("User was not found. Try again.");
             return;
         }
 
+        // opciones que tiene el admin
         while (true) {
             adminMenu();
             int a = Scanner.getInt("Select the action you want to preform: ");
@@ -58,23 +67,27 @@ public class AdminLogin {
         }
     }
 
+    // permite al admin craer otro admin ingresando usuario y contraseñias del nuevo admin
     public void createAdmin(Administrator administrator, AdminController adminController){
         String userName = Scanner.getString("Enter user name: ");
         String password = Scanner.getString("Enter password: ");
         administrator.createAdministrator(userName, password, adminController);
     }
 
+    // perminte al admin dar de alta sintomas (no esta completamente implementado los sintomas y sus relaciones)
     public void createSymptom(Administrator administrator, AdminController adminController, DiseaseController diseaseController){
         String symptom = Scanner.getString("Enter symptom: ");
         administrator.createSymptoms(symptom, diseaseController);
     }
 
+    //muestra los sintomas dados de alta
     public void symptomList(DiseaseController diseaseController){
         for (int i = 0; i < diseaseController.getSymptoms().size(); i++) {
             System.out.println(diseaseController.getSymptoms().get(i));
         }
     }
 
+    // busca los citizens bloqueados y los muestra para que el admin puede seleccionar si quiere desbloquear a alguno
     public void auditUsers(Administrator administrator, UserController userController){
         List<Citizen> citizens = userController.getCitizens();
         List<Citizen> blockedCitizens = userController.getBlockedCitizens();
@@ -91,6 +104,7 @@ public class AdminLogin {
         administrator.unblockCitizen(blockedCitizens.get(unBlock - 1));
     }
 
+    //menu
     public void adminMenu(){
         System.out.println("************");
         System.out.println("1. Create Admin");

@@ -6,6 +6,13 @@ import java.util.List;
 
 public class DiseaseController {
 
+    /*
+    la gestion de eventos todavia no fue implementada. Creemos que va a ser necesario
+    tener un abm de eventos para guardarlos
+    Por ahora un usuario solo puede indicar un sintoma y un administrador puede darlo de alta pero estas dos cosas no
+    estan relacionadas entre si
+     */
+
     private List<Disease> diseases;
     private List<String> symptoms;
 

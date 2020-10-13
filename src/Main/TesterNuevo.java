@@ -9,16 +9,12 @@ import Users.Citizen;
 import Users.UserController;
 import Util.Scanner;
 
-import java.util.Date;
-
 public class TesterNuevo {
     public static void main(String[] args) {
 
-        //PRUEBA DE LA CLASE DATE
-        Date date = new Date();
-        System.out.println("Fecha: " + date.getDate() + "/" + date.getMonth() + ". Hora: " + date.getHours() + ":" + date.getMinutes());
-        //PRUEBA DE LA CLASE DATE
-
+        /*
+        Crea los abm y un usuario administrado
+         */
 
         UserController userController = new UserController();
         AdminController adminController = new AdminController();
@@ -38,12 +34,15 @@ public class TesterNuevo {
 
         Citizen blockedCitizen2 = new Citizen("bbb","bbb");
         userController.addCitizen(blockedCitizen2);
-        blockedCitizen2.blockUser();
+        //blockedCitizen2.blockUser();
 
         Citizen blockedCitizen3 = new Citizen("ccc","ccc");
         userController.addCitizen(blockedCitizen3);
         //blockedCitizen3.blockUser();
 
+        /*
+        Menu para seleccionar si se quiere ingresar al userLogin, al adminLogin o salir del programa
+         */
         while(true){
             int action = Scanner.getInt("Select 1 to enter as a citizen, 2 to enter as an administrator or 3 to exit: ");
             if(action == 1){
