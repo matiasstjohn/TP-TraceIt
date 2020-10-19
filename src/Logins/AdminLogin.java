@@ -30,7 +30,7 @@ public class AdminLogin {
     /*
     Menu de los administradores
      */
-    public void adminInterfaze(AdminController adminController, UserController userController, DiseaseController diseaseController){
+    public void adminInterface(AdminController adminController, UserController userController, DiseaseController diseaseController){
 
         //busca un administrador (es el metodo de arriba)
        Administrator administrator = searchAdmin(adminController);
