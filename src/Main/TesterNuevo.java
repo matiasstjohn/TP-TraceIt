@@ -48,7 +48,7 @@ public class TesterNuevo {
             if(action == 1){
                 userLogin.citizenInterfaze(userController);
             }else if(action == 2){
-                adminLogin.adminInterfaze(adminController, userController, diseaseController);
+                adminLogin.adminInterface(adminController, userController, diseaseController);
             }else if(action == 3){
                 return;
             }
