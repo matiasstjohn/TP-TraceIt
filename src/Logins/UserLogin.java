@@ -1,8 +1,10 @@
 package Logins;
 
-import Users.Citizen;
-import Users.MeetingRequest;
-import Users.UserController;
+import Anses.Anses;
+import Controllers.MeetingController;
+import Controllers.UserController;
+import Encounters.MeetingTest;
+import Users.*;
 import Util.Scanner;
 
 import java.util.ArrayList;
@@ -18,16 +20,16 @@ public class UserLogin {
     Primer menu al seleccionar que se quiere ingresar como citizen.
     Da la opcion de crear una cuenta o de ingresar a una ya creada
      */
-    public void citizenInterfaze(UserController userController){
+    public void citizenInterfaze(UserController userController, MeetingController meetingController, Anses anses){
         while (true) {
             loginMenu();
             int a = Scanner.getInt("Select de action you want to perform: ");
             switch (a) {
                 case 1:
-                    createCitizen(userController);
+                    createCitizen(userController, anses);
                     break;
                 case 2:
-                    manageCitizen(userController);
+                    manageCitizen(userController, meetingController);
                     break;
                 case 3:
                     return;
@@ -40,7 +42,7 @@ public class UserLogin {
     /*
     Menu al seleccionar que se desea iniciar sesion como ciudadano
      */
-    public void manageCitizen(UserController userController){
+    public void manageCitizen(UserController userController, MeetingController meetingController){
 
         //Busca un ciudadano
         Citizen citizen = searchCitizen(userController);
@@ -74,13 +76,13 @@ public class UserLogin {
                     }
                     break;
                 case 4:
-                    displayMeetingRequests(citizen, userController);
+                    displayMeetingRequestsTest(citizen, userController, meetingController);
                     break;
                 case 5:
-                    sendMeetingRequestByCuil(citizen, userController);
+                    sendMeetingRequestByCuilTest(citizen, userController, meetingController);
                     break;
                 case 6:
-                    displayAttendedMeetings(citizen, userController);
+                    displayAttendedMeetingsTest(citizen, meetingController);
                     break;
                 case 7:
                     return;
@@ -96,12 +98,17 @@ public class UserLogin {
     Crea un usuario citizen a partir de un phone number y un numero de cuil
     Luego lo agrega a la lista de citizens
      */
-    public Citizen createCitizen(UserController userController){
+    public Citizen createCitizen(UserController userController, Anses anses){
         String phoneNumber = Scanner.getString("Phone Number: ");
         String cuil = Scanner.getString("Cuil: ");
-        Citizen citizen = new Citizen(phoneNumber, cuil);
-        userController.addCitizen(citizen);
-        return citizen;
+        if(anses.residentExists(cuil, phoneNumber)){
+            Citizen citizen = new Citizen(phoneNumber, cuil);
+            userController.addCitizen(citizen);
+            System.out.println("Citizen registred correctly.");
+            return citizen;
+        }
+        System.out.println("The citizen was not found in Anses data base.");
+        return null;
     }
 
     /*
@@ -119,57 +126,48 @@ public class UserLogin {
         return null;
     }
 
-    /*
-    Muestra las meeting requests de un citizen y le da la opcion de aceptarla o rechazarla
-     */
-    public void displayMeetingRequests(Citizen citizen, UserController userController){
-        List<MeetingRequest> meetingRequests = citizen.getMeetingRequests();
-        for (int i = 0; i < meetingRequests.size(); i++) {
-            System.out.println("" + (i+1) + "." + meetingRequests.get(i).getSender().getCuil());
+    public void displayMeetingRequestsTest(Citizen citizen, UserController userController, MeetingController meetingController){
+        List<MeetingTest> meetingTests = meetingController.searchCitizenMeetingRequests(citizen.getCuil());
+        for (int i = 0; i < meetingTests.size(); i++) {
+            System.out.println("" + (i+1) + "." + meetingTests.get(i).getSender());
         }
         int accept = Scanner.getInt("Select a request: ");
+        if(accept - 1 > meetingTests.size()){
+            return;
+        }
         int action = Scanner.getInt("Select 1 to accept or 2 to decline: ");
         if(action ==  1){
-            citizen.acceptMeetingRequest(accept - 1);
+            citizen.acceptMeetingTest(meetingTests.get(accept - 1));
         }else if(action == 2){
-            checkIfCitizenBlock(citizen.getMeetingRequests().get(accept - 1).getSender());
-            citizen.declineMeetingRequest(accept - 1);
+            checkIfCitizenBlockTest(userController.getCitizenByCuil(meetingTests.get(accept-1).getSender()));
+            citizen.declineMeetingTest(meetingTests.get(accept - 1));
         }
     }
 
-    /*
-    Muestra las meetings a las que un citizen asistio
-     */
-    public void displayAttendedMeetings(Citizen citizen, UserController userController){
-        List<MeetingRequest> meetings = citizen.getMeetings();
-        for (int i = 0; i < meetings.size(); i++) {
-            System.out.println("Date: " + meetings.get(i).getMeeting().getDate() + ". Participants: " + meetings.get(i).getMeeting().getParticipantsCuil());
-        }
-    }
-
-    /*
-    Le permite a un citizen mandar una meeting request ingresando la cantidad de gente, la fecha(por ahora es un int)
-    y los nummero de cuil de las personas que asistieron
-     */
-    public void sendMeetingRequestByCuil(Citizen citizen, UserController userController){
-        List<Citizen> requestCitizens = new ArrayList<>();
+    public void sendMeetingRequestByCuilTest(Citizen citizen, UserController userController, MeetingController meetingController){
+        List<String> requestCitizens = new ArrayList<>();
         int size = Scanner.getInt("Enter the amount of people: ");
         int date = Scanner.getInt("Enter the date: ");
         for (int i = 0; i < size; i++) {
             String cuil = Scanner.getString("Enter guests cuil " + (i+1) + ": ");
-            Citizen aCitizen = userController.getCitizenByCuil(cuil);
-            requestCitizens.add(aCitizen);
+            requestCitizens.add(cuil);
         }
-        citizen.createMeetingRequest(date, requestCitizens);
+        citizen.createMeetingTest(date, requestCitizens, meetingController);
     }
 
-    /*
-    se  ejecuta si alguien rechaza una meeting request
-    suma 1  a las rejected requests del citizen que envio la request
-    y luego si este llego a 5 requests rechazadas lo bloquea
-     */
-    public void checkIfCitizenBlock(Citizen citizen){
-        citizen.addRejecetedRequest();
+    public void displayAttendedMeetingsTest(Citizen citizen, MeetingController meetingController){
+        List<MeetingTest> meetings = meetingController.searchCitizenAcceptedRequests(citizen.getCuil());
+        for (int i = 0; i < meetings.size(); i++) {
+            System.out.print("Date: " + meetings.get(i).getDate() + ". Participants: ");
+            for (int j = 0; j < meetings.get(i).getAcceptedParticipants().size(); j++) {
+                System.out.print("" + meetings.get(i).getAcceptedParticipants().get(j) + ", ");
+            }
+            System.out.print("\n");
+        }
+    }
+
+    public void checkIfCitizenBlockTest(Citizen citizen){
+        citizen.addRejectedRequest();
         if(citizen.getRejectedRequests() >= 5){
             citizen.blockUser();
         }

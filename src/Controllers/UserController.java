@@ -1,4 +1,6 @@
-package Users;
+package Controllers;
+
+import Users.Citizen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,22 +51,6 @@ public class UserController {
         }
         return null;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public boolean banUser(Citizen citizen){
         //seria return citizen.blocked = true

@@ -1,24 +1,44 @@
 package Main;
 
+import Anses.Anses;
+import Controllers.AdminController;
+import Controllers.MeetingController;
+import Controllers.UserController;
 import Events.DiseaseController;
 import Logins.AdminLogin;
 import Logins.UserLogin;
-import Users.AdminController;
-import Users.Administrator;
-import Users.Citizen;
-import Users.UserController;
+import Anses.*;
+import Users.*;
 import Util.Scanner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TesterNuevo {
     public static void main(String[] args) {
 
         /*
-        Crea los abm y un usuario administrado
+        Crea los abm y un usuario administrador
          */
 
         UserController userController = new UserController();
         AdminController adminController = new AdminController();
         DiseaseController diseaseController = new DiseaseController();
+        MeetingController meetingController = new MeetingController();
+
+
+        Resident aaa = new Resident("aaa","aaa","pilar");
+        Resident bbb = new Resident("bbb","bbb","pilar");
+        Resident ccc = new Resident("ccc","ccc","pilar");
+        Resident eee = new Resident("eee", "eee","bsas");
+
+        List<Resident> residents = new ArrayList<>();
+        residents.add(aaa);
+        residents.add(bbb);
+        residents.add(ccc);
+        residents.add(eee);
+
+        Anses anses = new Anses(residents);
 
         Administrator admin = new Administrator("admin", "admin");
         adminController.addAdministrator(admin);
@@ -38,7 +58,7 @@ public class TesterNuevo {
 
         Citizen blockedCitizen3 = new Citizen("ccc","ccc");
         userController.addCitizen(blockedCitizen3);
-        blockedCitizen3.blockUser();
+        //blockedCitizen3.blockUser();
 
         /*
         Menu para seleccionar si se quiere ingresar al userLogin, al adminLogin o salir del programa
@@ -46,7 +66,7 @@ public class TesterNuevo {
         while(true){
             int action = Scanner.getInt("Select 1 to enter as a citizen, 2 to enter as an administrator or 3 to exit: ");
             if(action == 1){
-                userLogin.citizenInterfaze(userController);
+                userLogin.citizenInterfaze(userController, meetingController, anses);
             }else if(action == 2){
                 adminLogin.adminInterfaze(adminController, userController, diseaseController);
             }else if(action == 3){

@@ -1,4 +1,6 @@
-package Users;
+package Controllers;
+
+import Users.Administrator;
 
 import java.util.ArrayList;
 import java.util.List;

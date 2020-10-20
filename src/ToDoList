@@ -1,15 +1,28 @@
 
+
 Importante: Se requiere la implementación de acceso a datos con uso de generics. no esta hecho con generics
 
-falta implementar persistencia
+PROX ENTREGA:
 
-cruzar registro de citizens con la base de datos del anses
-otro amb para el anses?
+- correciones
+- exceptions
+- persistencia
+- relacion entre sintomas, diseases
 
-los admin crean eventos? o los dan de alta
-relacion entre symptoms
+CORRECIONES PRIMERA ENTREGA:
 
-chequear exceptions
+
+HACER PARA PROX ENTREGA * falta el informe explicativo de la solucion (se agradece el video!)
+* no usan junit!, recomendamos su uso
+LISTO* getParticipantsCuil debe devolver un arrary, no un string separado por coma. NO IMPLEMENTES PENSANDO EN UNA INTERFAZ DE USO.
+el modelo debe funcionar por su propia cuenta, independientemente de dónde se usa.
+* la Meeting debe contruirse con los participantes.
+* Date no puede ser un entero. USen el datetime o date o lo que quieran pero que represente una fecha y hora.
+LISTO * no demoren lo de anses!
+* No entiendo el uso de Meeting y Meeting Request, en citizen tienen dos array de Meeting Request para diferenciar el
+status de pendiente y concretada. Quizá quede mejor tener un status en el meeting, más que separado por colleciones.
+LISTO * Si van a usar una estructura de controllers, metanlo en una carpeta de nombre Controllers para que quede más prolijo
+
 
 
 

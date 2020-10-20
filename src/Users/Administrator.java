@@ -1,4 +1,5 @@
 package Users;
+import Controllers.AdminController;
 import Events.DiseaseController;
 
 public class Administrator {

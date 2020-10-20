@@ -1,7 +1,8 @@
 package Events;
 
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 public class Disease {
 
@@ -10,10 +11,10 @@ public class Disease {
     La idea es agrupar a los sintomas en diseases.
      */
 
-    Set<String> symptoms;
+    List<String> symptoms;
 
     public Disease(){
-        symptoms = new HashSet<>();
+        symptoms = new ArrayList<>();
     }
 
 
