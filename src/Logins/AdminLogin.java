@@ -1,5 +1,6 @@
 package Logins;
 
+import Events.Disease;
 import Events.DiseaseController;
 import Controllers.AdminController;
 import Users.Administrator;
@@ -7,6 +8,7 @@ import Users.Citizen;
 import Controllers.UserController;
 import Util.Scanner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdminLogin {
@@ -49,19 +51,21 @@ public class AdminLogin {
                     createAdmin(administrator, adminController);
                     break;
                 case 2:
-                    createSymptom(administrator,adminController,diseaseController);
+                    registerDisease(administrator, diseaseController);
                     break;
                 case 3:
-                    symptomList(diseaseController);
+                    removeSymptomOfDisease(administrator,diseaseController);
                     break;
                 case 4:
-                    auditUsers(administrator, userController);
+                    addSymptomOfDisease(administrator,diseaseController);
                     break;
                 case 5:
+                    auditUsers(administrator, userController);
+                    break;
+                case 6:
                     return;
                 default :
                     break;
-
             }
         }
     }
@@ -74,16 +78,59 @@ public class AdminLogin {
     }
 
     // perminte al admin dar de alta sintomas (no esta completamente implementado los sintomas y sus relaciones)
-    public void createSymptom(Administrator administrator, AdminController adminController, DiseaseController diseaseController){
-        String symptom = Scanner.getString("Enter symptom: ");
-        administrator.createSymptoms(symptom, diseaseController);
+    public void registerDisease(Administrator administrator, DiseaseController diseaseController){
+        String diseaseName = Scanner.getString("Enter disease name: ");
+        int amountOfSymptoms = Scanner.getInt("Enter the amount of symptoms: ");
+        List<String> symptoms = new ArrayList<>();
+        for (int i = 0; i < amountOfSymptoms; i++) {
+            String aSymptom = Scanner.getString("Enter symptom " + (i+1) + ": ");
+            symptoms.add(aSymptom);
+        }
+        administrator.registerDisease(diseaseName, symptoms, diseaseController);
+        System.out.println("Symptom registered correctly");
     }
 
-    //muestra los sintomas dados de alta
-    public void symptomList(DiseaseController diseaseController){
-        for (int i = 0; i < diseaseController.getSymptoms().size(); i++) {
-            System.out.println(diseaseController.getSymptoms().get(i));
+    public void removeSymptomOfDisease(Administrator administrator, DiseaseController diseaseController){
+        showDiseases(diseaseController);
+        String disease = Scanner.getString("Enter a disease: ");
+        if(diseaseExists(disease,diseaseController)){
+            return;
         }
+        showDiseaseSymptoms(disease, diseaseController);
+        String symptomToRemove = Scanner.getString("Enter the symptom you want to remove: ");
+        administrator.removeDiseaseSymptom(disease, symptomToRemove, diseaseController);
+        System.out.println("Symptom removed correctly");
+    }
+
+    public void addSymptomOfDisease(Administrator administrator, DiseaseController diseaseController){
+        showDiseases(diseaseController);
+        String disease = Scanner.getString("Enter a disease: ");
+        if(diseaseExists(disease,diseaseController)){
+            return;
+        }
+        String symptomToAdd = Scanner.getString("Enter the symptom you want to add: ");
+        administrator.addDiseaseSymptom(disease, symptomToAdd, diseaseController);
+        System.out.println("Symptom added correctly");
+    }
+
+    public void showDiseases(DiseaseController diseaseController){
+        for (int i = 0; i < diseaseController.getDiseases().size(); i++) {
+            System.out.println("" + (i+1) + ". "  + diseaseController.getDiseases().get(i).getDiseaseName() + "");
+        }
+    }
+
+    public void showDiseaseSymptoms(String diseaseName, DiseaseController diseaseController){
+        Disease disease = diseaseController.getDiseaseByName(diseaseName);
+        for (int i = 0; i < disease.getSymptoms().size(); i++) {
+            System.out.println("" + (i+1) + ". "  + disease.getSymptoms().get(i) + "");
+        }
+    }
+
+    public boolean diseaseExists(String diseaseName, DiseaseController diseaseController){
+        if(diseaseController.getDiseaseByName(diseaseName) == null){
+            return true;
+        }
+        return false;
     }
 
     // busca los citizens bloqueados y los muestra para que el admin puede seleccionar si quiere desbloquear a alguno
@@ -107,10 +154,11 @@ public class AdminLogin {
     public void adminMenu(){
         System.out.println("************");
         System.out.println("1. Create Admin");
-        System.out.println("2. Create Symptom");
-        System.out.println("3. Symptom list");
-        System.out.println("4. Audit users");
-        System.out.println("5. Save and exit");
+        System.out.println("2. Register disease");
+        System.out.println("3. Remove symptom from disease");
+        System.out.println("4. Add symptom to disease");
+        System.out.println("5. Audit users");
+        System.out.println("6. Save and exit");
         System.out.println("************");
     }
 

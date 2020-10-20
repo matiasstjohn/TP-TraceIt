@@ -1,6 +1,9 @@
 package Users;
 import Controllers.AdminController;
+import Events.Disease;
 import Events.DiseaseController;
+
+import java.util.List;
 
 public class Administrator {
 
@@ -28,13 +31,34 @@ public class Administrator {
     }
 
     //permite al admin dar de alta un sintoma y los guarda en la lista de sintomas
-    public void createSymptoms(String symptoms, DiseaseController diseaseController){
+    /*public void createSymptoms(String symptoms, DiseaseController diseaseController){
         diseaseController.addSymptom(symptoms);
-    }
+    }*/
 
     //permite al administrador desbloquear a un citizen
     public void unblockCitizen(Citizen citizen){
         citizen.unBlockUser();
+    }
+
+    public void registerDisease(String diseaseName, List<String> symptoms, DiseaseController diseaseController){
+        Disease disease = new Disease(diseaseName, symptoms);
+        diseaseController.addDisease(disease);
+    }
+
+    public void removeDiseaseSymptom(String diseaseName, String symptom, DiseaseController diseaseController){
+        if(diseaseController.getDiseaseByName(diseaseName) != null){
+            diseaseController.getDiseaseByName(diseaseName).removeSymptom(symptom);
+        }else{
+            //exception
+        }
+    }
+
+    public void addDiseaseSymptom(String diseaseName, String symptom, DiseaseController diseaseController){
+        if(diseaseController.getDiseaseByName(diseaseName) != null){
+            diseaseController.getDiseaseByName(diseaseName).addSymptom(symptom);
+        }else{
+            //exception
+        }
     }
 
 

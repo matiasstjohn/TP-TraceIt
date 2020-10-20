@@ -11,10 +11,31 @@ public class Disease {
     La idea es agrupar a los sintomas en diseases.
      */
 
+    String diseaseName;
     List<String> symptoms;
 
-    public Disease(){
-        symptoms = new ArrayList<>();
+    public Disease(String diseaseName, List<String> symptoms){
+        this.symptoms = symptoms;
+        this.diseaseName = diseaseName;
+    }
+
+    public String getDiseaseName(){
+        return diseaseName;
+    }
+
+    public void removeSymptom(String position){
+        symptoms.remove(position);
+    }
+
+    public void addSymptom(String symptom){
+        if(symptoms.contains(symptom)){
+            return;
+        }
+        symptoms.add(symptom);
+    }
+
+    public List<String> getSymptoms(){
+        return symptoms;
     }
 
 

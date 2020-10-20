@@ -14,14 +14,14 @@ public class DiseaseController {
      */
 
     private List<Disease> diseases;
-    private List<String> symptoms;
+    //private List<String> symptoms;
 
     public DiseaseController(){ // se rellenan con la info de los txt
         diseases = new ArrayList<>();
-        symptoms = new ArrayList<>();
+        //symptoms = new ArrayList<>();
     }
 
-    public List<String> getSymptoms() {
+    /*public List<String> getSymptoms() {
         return symptoms;
     }
 
@@ -34,8 +34,24 @@ public class DiseaseController {
 
     public void removeSymptom(String symptom){
         symptoms.remove(symptom);
+    }*/
+
+    public List<Disease> getDiseases(){
+        return diseases;
     }
 
+    public void addDisease(Disease disease){
+        diseases.add(disease);
+    }
+
+    public Disease getDiseaseByName(String diseaseName){
+        for (int i = 0; i < diseases.size(); i++) {
+            if(diseases.get(i).getDiseaseName().equals(diseaseName)){
+                return diseases.get(i);
+            }
+        }
+        return null;
+    }
 
 
 }
