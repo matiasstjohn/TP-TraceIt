@@ -27,11 +27,6 @@ public class MeetingTest {
     public Date getDate(){
         return date;
     }
-/*
-    public String getDateAsString(){
-        return date.getMonth().toString() + date.getDay().toString() + date.getHours().toString();
-    }
-*/
 
     public void confirmParticipant(String citizenCuil){
         if(sendTo.contains(citizenCuil)){
