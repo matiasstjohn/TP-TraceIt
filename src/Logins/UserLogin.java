@@ -149,9 +149,9 @@ public class UserLogin {
         List<String> requestCitizens = new ArrayList<>();
         int size = Scanner.getInt("Enter the amount of people: ");
 
-        String month = Scanner.getString("Enter the month: ");
-        String day = Scanner.getString("Enter the day: ");
-        String hours = Scanner.getString("Enter the time: ");
+        Integer month = Scanner.getInt("Enter the month: ");
+        Integer day = Scanner.getInt("Enter the day: ");
+        Integer hours = Scanner.getInt("Enter the time: ");
 
         Date date = new Date(month,day,hours);
 

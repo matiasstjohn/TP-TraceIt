@@ -2,30 +2,40 @@ package Encounters;
 
 public class Date {
 
-    private String month;
-    private String day;
-    private String hours;
+    private Integer month;
+    private Integer day;
+    private Integer hours;
 
-    public Date(String month, String day, String hours) {
+    private String monthInString;
+    private String dayInString;
+    private String hoursInString;
+
+    public Date(Integer month, Integer day, Integer hours) {
         this.month = month;
         this.day = day;
         this.hours = hours;
     }
 
-    public String getMonth() {
+    public Integer getMonth() {
         return month;
     }
 
-    public String getDay() {
+    public Integer getDay() {
         return day;
     }
 
-    public String getHours() {
+    public Integer getHours() {
         return hours;
     }
 
     public String getTime(){
         return month + " " + day + " " + hours;
+    }
+
+    public void passDateToString(){
+        monthInString = month.toString();
+        dayInString = day.toString();
+        hoursInString = hours.toString();
     }
 
 }
