@@ -1,6 +1,7 @@
 package Users;
 
 import Controllers.MeetingController;
+import Encounters.Date;
 import Encounters.MeetingTest;
 
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class Citizen {
     }
 
 
-    public MeetingTest createMeetingTest(int date, List<String> citizensCuil, MeetingController meetingController){
+    public MeetingTest createMeetingTest(Date date, List<String> citizensCuil, MeetingController meetingController){
         citizensCuil.add(this.getCuil());
         MeetingTest meetingTest = new MeetingTest(date, this.getCuil(), citizensCuil, meetingController);
         meetingTest.confirmParticipant(this.getCuil());

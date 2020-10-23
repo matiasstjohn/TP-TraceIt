@@ -7,12 +7,12 @@ import java.util.List;
 
 public class MeetingTest {
 
-    int date;
+    Date date;
     List<String> acceptedParticipants;
     List<String> sendTo;
     String sender;
 
-    public MeetingTest(int date, String sender, List<String> sendTo, MeetingController meetingController) {
+    public MeetingTest(Date date, String sender, List<String> sendTo, MeetingController meetingController) {
         this.date = date;
         this.acceptedParticipants = new ArrayList<>();
         this.sendTo = sendTo;
@@ -24,9 +24,14 @@ public class MeetingTest {
         return sender;
     }
 
-    public int getDate(){
+    public Date getDate(){
         return date;
     }
+/*
+    public String getDateAsString(){
+        return date.getMonth().toString() + date.getDay().toString() + date.getHours().toString();
+    }
+*/
 
     public void confirmParticipant(String citizenCuil){
         if(sendTo.contains(citizenCuil)){

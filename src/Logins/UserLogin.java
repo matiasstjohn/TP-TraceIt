@@ -4,6 +4,7 @@ import Anses.Anses;
 import Controllers.MeetingController;
 import Controllers.UserController;
 import Encounters.MeetingTest;
+import Encounters.Date;
 import Users.*;
 import Util.Scanner;
 
@@ -147,7 +148,14 @@ public class UserLogin {
     public void sendMeetingRequestByCuilTest(Citizen citizen, UserController userController, MeetingController meetingController){
         List<String> requestCitizens = new ArrayList<>();
         int size = Scanner.getInt("Enter the amount of people: ");
-        int date = Scanner.getInt("Enter the date: ");
+
+        Integer month = Scanner.getInt("Enter the month: ");
+        Integer day = Scanner.getInt("Enter the day: ");
+        Integer hours = Scanner.getInt("Enter the time: ");
+
+        Date date = new Date(month,day,hours);
+
+
         for (int i = 0; i < size; i++) {
             String cuil = Scanner.getString("Enter guests cuil " + (i+1) + ": ");
             requestCitizens.add(cuil);
