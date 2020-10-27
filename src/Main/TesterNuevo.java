@@ -10,12 +10,18 @@ import Logins.UserLogin;
 import Anses.*;
 import Users.*;
 import Util.Scanner;
+import sun.util.calendar.BaseCalendar;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TesterNuevo {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         /*
         Crea los abm y un usuario administrador
@@ -40,8 +46,6 @@ public class TesterNuevo {
 
         Anses anses = new Anses(residents);
 
-        Administrator admin = new Administrator("admin", "admin");
-        adminController.addAdministrator(admin);
 
         UserLogin userLogin = new UserLogin();
         AdminLogin adminLogin = new AdminLogin();
@@ -66,7 +70,7 @@ public class TesterNuevo {
         while(true){
             int action = Scanner.getInt("Select 1 to enter as a citizen, 2 to enter as an administrator or 3 to exit: ");
             if(action == 1){
-                userLogin.citizenInterfaze(userController, meetingController, anses);
+                userLogin.citizenInterfaze(userController, meetingController, anses, diseaseController);
             }else if(action == 2){
                 adminLogin.adminInterface(adminController, userController, diseaseController);
             }else if(action == 3){

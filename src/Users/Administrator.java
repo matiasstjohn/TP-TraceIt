@@ -2,6 +2,8 @@ package Users;
 import Controllers.AdminController;
 import Events.Disease;
 import Events.DiseaseController;
+import Exceptions.DiseaseAlreadyRegisteredException;
+import Exceptions.UserAlreadyExistsException;
 
 import java.util.List;
 
@@ -24,8 +26,13 @@ public class Administrator {
     }
 
     //permite que el admin cree otros admins t y lo guarda en el ABM de ususarios administradores
-    public Administrator createAdministrator(String userName, String password, AdminController adminController){
+    public Administrator createAdministrator(String userName, String password, AdminController adminController) throws UserAlreadyExistsException {
         Administrator administrator = new Administrator(userName, password);
+        for (int i = 0; i < adminController.getAdministrators().size(); i++) {
+            if(adminController.getAdministrators().get(i).getUserName().equals(userName)){
+                throw new UserAlreadyExistsException();
+            }
+        }
         adminController.addAdministrator(administrator);
         return administrator;
     }
@@ -40,8 +47,11 @@ public class Administrator {
         citizen.unBlockUser();
     }
 
-    public void registerDisease(String diseaseName, List<String> symptoms, DiseaseController diseaseController){
+    public void registerDisease(String diseaseName, List<String> symptoms, DiseaseController diseaseController) throws DiseaseAlreadyRegisteredException {
         Disease disease = new Disease(diseaseName, symptoms);
+        if(diseaseController.getDiseaseByName(diseaseName) != null){
+            throw new DiseaseAlreadyRegisteredException();
+        }
         diseaseController.addDisease(disease);
     }
 

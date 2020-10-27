@@ -3,8 +3,11 @@ package Logins;
 import Anses.Anses;
 import Controllers.MeetingController;
 import Controllers.UserController;
-import Encounters.MeetingTest;
+import Encounters.Meeting;
 import Encounters.Date;
+import Events.DeclaredSymptom;
+import Events.DiseaseController;
+import Exceptions.UserAlreadyExistsException;
 import Users.*;
 import Util.Scanner;
 
@@ -21,16 +24,20 @@ public class UserLogin {
     Primer menu al seleccionar que se quiere ingresar como citizen.
     Da la opcion de crear una cuenta o de ingresar a una ya creada
      */
-    public void citizenInterfaze(UserController userController, MeetingController meetingController, Anses anses){
+    public void citizenInterfaze(UserController userController, MeetingController meetingController, Anses anses, DiseaseController diseaseController){
         while (true) {
             loginMenu();
             int a = Scanner.getInt("Select de action you want to perform: ");
             switch (a) {
                 case 1:
-                    createCitizen(userController, anses);
+                    try{
+                        createCitizen(userController, anses);
+                    }catch (UserAlreadyExistsException e){
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case 2:
-                    manageCitizen(userController, meetingController);
+                    manageCitizen(userController, meetingController, diseaseController);
                     break;
                 case 3:
                     return;
@@ -43,7 +50,7 @@ public class UserLogin {
     /*
     Menu al seleccionar que se desea iniciar sesion como ciudadano
      */
-    public void manageCitizen(UserController userController, MeetingController meetingController){
+    public void manageCitizen(UserController userController, MeetingController meetingController, DiseaseController diseaseController){
 
         //Busca un ciudadano
         Citizen citizen = searchCitizen(userController);
@@ -64,16 +71,16 @@ public class UserLogin {
             int a = Scanner.getInt("Select de action you want to perform: ");
             switch (a) {
                 case 1:
-                    String symptom = Scanner.getString("Preceded symptom: ");
-                    citizen.addSymptom(symptom);
+                    declareSymptom(citizen);
+                    citizen.checkIfDisease(diseaseController);
                     break;
                 case 2:
-                    String removeSymptom = Scanner.getString("Remove symptom: ");
-                    citizen.removeSymptom(removeSymptom);
+                    removeDeclaredSymptom(citizen);
+                    citizen.checkIfDisease(diseaseController);
                     break;
                 case 3:
                     for (int i = 0; i < citizen.getSymptoms().size(); i++) {
-                        System.out.println(citizen.getSymptoms().get(i));
+                        System.out.println(citizen.getSymptoms().get(i).getSymptomName());
                     }
                     break;
                 case 4:
@@ -86,24 +93,54 @@ public class UserLogin {
                     displayAttendedMeetingsTest(citizen, meetingController);
                     break;
                 case 7:
+                    //esta aca de prueba
+                    for (int i = 0; i < citizen.getConfirmedDiseases().size(); i++) {
+                        System.out.println("" + citizen.getConfirmedDiseases().get(i).getDiseaseName() + "");
+                    }
+                    break;
+                case 8:
                     return;
                 default :
                     break;
-
             }
         }
     }
 
 
+    public void declareSymptom(Citizen citizen){
+        String symptomName = Scanner.getString("Proceeded symptom: ");
+
+        Integer month = Scanner.getInt("Enter the month: ");
+        Integer day = Scanner.getInt("Enter the day: ");
+        Integer hours = Scanner.getInt("Enter the time: ");
+
+        Date date = new Date(month,day,hours);
+        DeclaredSymptom declaredSymptom = new DeclaredSymptom(symptomName,date);
+        citizen.addSymptom(declaredSymptom);
+    }
+
+    public void removeDeclaredSymptom(Citizen citizen){
+        String symptomName = Scanner.getString("Proceeded symptom: ");
+        for (int i = 0; i < citizen.getSymptoms().size(); i++) {
+            if(citizen.getSymptoms().get(i).getSymptomName().equals(symptomName)){
+                citizen.removeSymptom(citizen.getSymptoms().get(i));
+            }
+        }
+        System.out.println("Symptom removed correctly");
+    }
+
     /*
     Crea un usuario citizen a partir de un phone number y un numero de cuil
     Luego lo agrega a la lista de citizens
      */
-    public Citizen createCitizen(UserController userController, Anses anses){
+    public Citizen createCitizen(UserController userController, Anses anses) throws UserAlreadyExistsException {
         String phoneNumber = Scanner.getString("Phone Number: ");
         String cuil = Scanner.getString("Cuil: ");
         if(anses.residentExists(cuil, phoneNumber)){
             Citizen citizen = new Citizen(phoneNumber, cuil);
+            if(userController.getCitizenByCuil(cuil) != null){
+                throw new UserAlreadyExistsException();
+            }
             userController.addCitizen(citizen);
             System.out.println("Citizen registred correctly.");
             return citizen;
@@ -128,20 +165,20 @@ public class UserLogin {
     }
 
     public void displayMeetingRequestsTest(Citizen citizen, UserController userController, MeetingController meetingController){
-        List<MeetingTest> meetingTests = meetingController.searchCitizenMeetingRequests(citizen.getCuil());
-        for (int i = 0; i < meetingTests.size(); i++) {
-            System.out.println("" + (i+1) + "." + meetingTests.get(i).getSender());
+        List<Meeting> meeting = meetingController.searchCitizenMeetingRequests(citizen.getCuil());
+        for (int i = 0; i < meeting.size(); i++) {
+            System.out.println("" + (i+1) + "." + meeting.get(i).getSender());
         }
         int accept = Scanner.getInt("Select a request: ");
-        if(accept - 1 > meetingTests.size()){
+        if(accept - 1 > meeting.size()){
             return;
         }
         int action = Scanner.getInt("Select 1 to accept or 2 to decline: ");
         if(action ==  1){
-            citizen.acceptMeetingTest(meetingTests.get(accept - 1));
+            citizen.acceptMeeting(meeting.get(accept - 1));
         }else if(action == 2){
-            checkIfCitizenBlockTest(userController.getCitizenByCuil(meetingTests.get(accept-1).getSender()));
-            citizen.declineMeetingTest(meetingTests.get(accept - 1));
+            checkIfCitizenBlockTest(userController.getCitizenByCuil(meeting.get(accept-1).getSender()));
+            citizen.declineMeeting(meeting.get(accept - 1));
         }
     }
 
@@ -160,13 +197,13 @@ public class UserLogin {
             String cuil = Scanner.getString("Enter guests cuil " + (i+1) + ": ");
             requestCitizens.add(cuil);
         }
-        citizen.createMeetingTest(date, requestCitizens, meetingController);
+        citizen.createMeeting(date, requestCitizens, meetingController);
     }
 
     public void displayAttendedMeetingsTest(Citizen citizen, MeetingController meetingController){
-        List<MeetingTest> meetings = meetingController.searchCitizenAcceptedRequests(citizen.getCuil());
+        List<Meeting> meetings = meetingController.searchCitizenAcceptedRequests(citizen.getCuil());
         for (int i = 0; i < meetings.size(); i++) {
-            System.out.print("Date: " + meetings.get(i).getDate() + ". Participants: ");
+            System.out.print("Date: " + meetings.get(i).getDate().toString() + ". Participants: ");
             for (int j = 0; j < meetings.get(i).getAcceptedParticipants().size(); j++) {
                 System.out.print("" + meetings.get(i).getAcceptedParticipants().get(j) + ", ");
             }
@@ -199,7 +236,8 @@ public class UserLogin {
         System.out.println("4. Display meeting requests");
         System.out.println("5. Send meeting requests");
         System.out.println("6. Display attended meetings");
-        System.out.println("7. Log out");
+        System.out.println("7. Display related diseases");
+        System.out.println("8. Log out");
         System.out.println("************");
     }
 

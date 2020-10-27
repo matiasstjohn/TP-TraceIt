@@ -17,7 +17,7 @@ public class UserController {
     private List<Citizen> citizens;
 
     //constructor. El array list se rellenaria con la info de los txt
-    public UserController(){  // se rellenan con la info de los txt
+    public UserController(){
         citizens = new ArrayList<>();
     }
 
@@ -61,6 +61,7 @@ public class UserController {
         //seria return.citizen = false
         return false;
     }
+
 
 
 }

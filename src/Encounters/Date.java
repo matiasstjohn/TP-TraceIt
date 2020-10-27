@@ -28,8 +28,8 @@ public class Date {
         return hours;
     }
 
-    public String getTime(){
-        return month + " " + day + " " + hours;
+    public String toString(){
+        return "" + month + "/" + day + " " + hours;
     }
 
     public void passDateToString(){

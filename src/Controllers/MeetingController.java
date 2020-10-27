@@ -1,20 +1,20 @@
 package Controllers;
 
-import Encounters.MeetingTest;
+import Encounters.Meeting;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MeetingController {
 
-    List<MeetingTest> meetings;
+    List<Meeting> meetings;
 
     public MeetingController(){
         meetings = new ArrayList<>();
     }
 
-    public List<MeetingTest> searchCitizenMeetingRequests(String cuil){
-        List<MeetingTest> meetingsRecived = new ArrayList<>();
+    public List<Meeting> searchCitizenMeetingRequests(String cuil){
+        List<Meeting> meetingsRecived = new ArrayList<>();
         for (int i = 0; i < meetings.size(); i++) {
             if(meetings.get(i).getSendTo().contains(cuil)){
                 meetingsRecived.add(meetings.get(i));
@@ -23,8 +23,8 @@ public class MeetingController {
         return meetingsRecived;
     }
 
-    public List<MeetingTest> searchCitizenAcceptedRequests(String cuil){
-        List<MeetingTest> meetingsAccepted = new ArrayList<>();
+    public List<Meeting> searchCitizenAcceptedRequests(String cuil){
+        List<Meeting> meetingsAccepted = new ArrayList<>();
         for (int i = 0; i < meetings.size(); i++) {
             if(meetings.get(i).getAcceptedParticipants().contains(cuil)){
                 meetingsAccepted.add(meetings.get(i));
@@ -33,8 +33,8 @@ public class MeetingController {
         return meetingsAccepted;
     }
 
-    public void addMeeting(MeetingTest meetingTest){
-        meetings.add(meetingTest);
+    public void addMeeting(Meeting meeting){
+        meetings.add(meeting);
     }
 
 

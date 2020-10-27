@@ -38,5 +38,20 @@ public class Disease {
         return symptoms;
     }
 
+    public String symptomsToString(){
+        String symptomsString = "";
+        for (int i = 0; i < symptoms.size(); i++) {
+            if(symptomsString.equals("")){
+                symptomsString = symptomsString + symptoms.get(i);
+            }else{
+                symptomsString = symptomsString + "," + symptoms.get(i);
+            }
+
+        }
+        return symptomsString;
+    }
+
+
+
 
 }

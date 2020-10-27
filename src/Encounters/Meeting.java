@@ -5,14 +5,14 @@ import Controllers.MeetingController;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MeetingTest {
+public class Meeting {
 
     Date date;
     List<String> acceptedParticipants;
     List<String> sendTo;
     String sender;
 
-    public MeetingTest(Date date, String sender, List<String> sendTo, MeetingController meetingController) {
+    public Meeting(Date date, String sender, List<String> sendTo, MeetingController meetingController) {
         this.date = date;
         this.acceptedParticipants = new ArrayList<>();
         this.sendTo = sendTo;

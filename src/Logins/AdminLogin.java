@@ -3,6 +3,8 @@ package Logins;
 import Events.Disease;
 import Events.DiseaseController;
 import Controllers.AdminController;
+import Exceptions.DiseaseAlreadyRegisteredException;
+import Exceptions.UserAlreadyExistsException;
 import Users.Administrator;
 import Users.Citizen;
 import Controllers.UserController;
@@ -25,6 +27,7 @@ public class AdminLogin {
                 return administrators.get(i);
             }
         }
+        //throw new UserNotFoundException();
         return null;
     }
 
@@ -34,6 +37,7 @@ public class AdminLogin {
     public void adminInterface(AdminController adminController, UserController userController, DiseaseController diseaseController){
 
         //busca un administrador (es el metodo de arriba)
+
        Administrator administrator = searchAdmin(adminController);
 
        //condiciones para que el admin pueda entrar
@@ -63,6 +67,11 @@ public class AdminLogin {
                     auditUsers(administrator, userController);
                     break;
                 case 6:
+                    for (int i = 0; i < diseaseController.getDiseases().size(); i++) {
+                        System.out.println(diseaseController.getDiseases().get(i).getDiseaseName());
+                    }
+                    break;
+                case 7:
                     return;
                 default :
                     break;
@@ -74,11 +83,16 @@ public class AdminLogin {
     public void createAdmin(Administrator administrator, AdminController adminController){
         String userName = Scanner.getString("Enter user name: ");
         String password = Scanner.getString("Enter password: ");
-        administrator.createAdministrator(userName, password, adminController);
+        try{
+            administrator.createAdministrator(userName, password, adminController);
+        }catch (UserAlreadyExistsException e){
+            System.out.println(e.getMessage());
+            return;
+        }
     }
 
     // perminte al admin dar de alta sintomas (no esta completamente implementado los sintomas y sus relaciones)
-    public void registerDisease(Administrator administrator, DiseaseController diseaseController){
+    public void registerDisease(Administrator administrator, DiseaseController diseaseController) {
         String diseaseName = Scanner.getString("Enter disease name: ");
         int amountOfSymptoms = Scanner.getInt("Enter the amount of symptoms: ");
         List<String> symptoms = new ArrayList<>();
@@ -86,14 +100,19 @@ public class AdminLogin {
             String aSymptom = Scanner.getString("Enter symptom " + (i+1) + ": ");
             symptoms.add(aSymptom);
         }
-        administrator.registerDisease(diseaseName, symptoms, diseaseController);
+        try{
+            administrator.registerDisease(diseaseName, symptoms, diseaseController);
+        }catch (DiseaseAlreadyRegisteredException e){
+            System.out.println(e.getMessage());
+            return;
+        }
         System.out.println("Symptom registered correctly");
     }
 
     public void removeSymptomOfDisease(Administrator administrator, DiseaseController diseaseController){
         showDiseases(diseaseController);
         String disease = Scanner.getString("Enter a disease: ");
-        if(diseaseExists(disease,diseaseController)){
+        if(diseaseNotExists(disease,diseaseController)){
             return;
         }
         showDiseaseSymptoms(disease, diseaseController);
@@ -105,7 +124,7 @@ public class AdminLogin {
     public void addSymptomOfDisease(Administrator administrator, DiseaseController diseaseController){
         showDiseases(diseaseController);
         String disease = Scanner.getString("Enter a disease: ");
-        if(diseaseExists(disease,diseaseController)){
+        if(diseaseNotExists(disease,diseaseController)){
             return;
         }
         String symptomToAdd = Scanner.getString("Enter the symptom you want to add: ");
@@ -126,7 +145,7 @@ public class AdminLogin {
         }
     }
 
-    public boolean diseaseExists(String diseaseName, DiseaseController diseaseController){
+    public boolean diseaseNotExists(String diseaseName, DiseaseController diseaseController){
         if(diseaseController.getDiseaseByName(diseaseName) == null){
             return true;
         }
@@ -158,7 +177,8 @@ public class AdminLogin {
         System.out.println("3. Remove symptom from disease");
         System.out.println("4. Add symptom to disease");
         System.out.println("5. Audit users");
-        System.out.println("6. Save and exit");
+        System.out.println("6. Display possible diseases");
+        System.out.println("7. Save and exit");
         System.out.println("************");
     }
 

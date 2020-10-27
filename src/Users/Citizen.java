@@ -2,7 +2,10 @@ package Users;
 
 import Controllers.MeetingController;
 import Encounters.Date;
-import Encounters.MeetingTest;
+import Encounters.Meeting;
+import Events.DeclaredSymptom;
+import Events.Disease;
+import Events.DiseaseController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +22,16 @@ public class Citizen {
     private String cuil;
     private boolean blocked;
     private int rejectedRequests;
-    private List<String> symptoms;
+    private List<DeclaredSymptom> declaredSymptoms;
+    private List<Disease> confirmedDiseases;
 
     public Citizen(String phoneNumber, String cuil){
         this.phoneNumber = phoneNumber;
         this.cuil = cuil;
         blocked = false;
-        symptoms = new ArrayList<>();
+        declaredSymptoms = new ArrayList<>();
         rejectedRequests = 0;
+        confirmedDiseases = new ArrayList<>();
     }
 
     //devuelve el phone number
@@ -65,34 +70,70 @@ public class Citizen {
     }
 
     //agrega un sintoma a la lista de los sintomas que tiene
-    public void addSymptom(String symptom){
-        symptoms.add(symptom);
+    public void addSymptom(DeclaredSymptom declaredSymptom){
+         declaredSymptoms.add(declaredSymptom);
+    }
+
+    public void checkIfDisease(DiseaseController diseaseController){
+        List<Disease> diseases = diseaseController.getDiseases();
+        for (int i = 0; i < diseases.size(); i++) {
+            int counter = 0;
+            for (int j = 0; j < diseases.get(i).getSymptoms().size(); j++) {
+                String symptom = diseases.get(i).getSymptoms().get(j);
+                for (int k = 0; k < declaredSymptoms.size(); k++) {
+                    if(declaredSymptoms.get(k).getSymptomName().equals(symptom)){
+                        counter++;
+                    }
+                }
+            }
+            if(counter >= 2 && !confirmedDiseases.contains(diseases.get(i))){
+                confirmedDiseases.add(diseases.get(i));
+            }else if(counter < 2 && confirmedDiseases.contains(diseases.get(i))){
+                confirmedDiseases.remove(diseases.get(i));
+            }
+        }
+    }
+
+    public List<Disease> getConfirmedDiseases(){
+        return confirmedDiseases;
+    }
+
+    public void addConfirmedDisease(Disease disease){
+        confirmedDiseases.add(disease);
+    }
+
+    public void removeConfirmedDisease(Disease disease){
+        confirmedDiseases.add(disease);
+    }
+
+    public boolean hasDisease(Disease disease){
+        return confirmedDiseases.contains(disease);
     }
 
     //saca un sintoma de la lista
-    public void removeSymptom(String symptom){
-        symptoms.remove(symptom);
+    public void removeSymptom(DeclaredSymptom symptom){
+        declaredSymptoms.remove(symptom);
     }
 
     //devuelve todos los sintomas que agrego el usuario
-    public List<String> getSymptoms() {
-        return symptoms;
+    public List<DeclaredSymptom> getSymptoms() {
+        return declaredSymptoms;
     }
 
 
-    public MeetingTest createMeetingTest(Date date, List<String> citizensCuil, MeetingController meetingController){
+    public Meeting createMeeting(Date date, List<String> citizensCuil, MeetingController meetingController){
         citizensCuil.add(this.getCuil());
-        MeetingTest meetingTest = new MeetingTest(date, this.getCuil(), citizensCuil, meetingController);
-        meetingTest.confirmParticipant(this.getCuil());
-        return meetingTest;
+        Meeting meeting = new Meeting(date, this.getCuil(), citizensCuil, meetingController);
+        meeting.confirmParticipant(this.getCuil());
+        return meeting;
     }
 
-    public void acceptMeetingTest(MeetingTest meetingTest){
-        meetingTest.confirmParticipant(this.getCuil());
+    public void acceptMeeting(Meeting meeting){
+        meeting.confirmParticipant(this.getCuil());
     }
 
-    public void declineMeetingTest(MeetingTest meetingTest){
-        meetingTest.declineParticipation(this.getCuil());
+    public void declineMeeting(Meeting meeting){
+        meeting.declineParticipation(this.getCuil());
     }
 
 }
