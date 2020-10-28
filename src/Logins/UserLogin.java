@@ -71,7 +71,7 @@ public class UserLogin {
             int a = Scanner.getInt("Select de action you want to perform: ");
             switch (a) {
                 case 1:
-                    declareSymptom(citizen);
+                    declareSymptom(citizen, diseaseController);
                     citizen.checkIfDisease(diseaseController);
                     break;
                 case 2:
@@ -107,8 +107,13 @@ public class UserLogin {
     }
 
 
-    public void declareSymptom(Citizen citizen){
+    public void declareSymptom(Citizen citizen, DiseaseController diseaseController){
         String symptomName = Scanner.getString("Proceeded symptom: ");
+
+        if(!diseaseController.getSymptoms().contains(symptomName)){
+            System.out.println("That symptom is not related with a disease");
+            return;
+        }
 
         Integer month = Scanner.getInt("Enter the month: ");
         Integer day = Scanner.getInt("Enter the day: ");

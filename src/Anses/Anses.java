@@ -1,14 +1,18 @@
 package Anses;
 
+import Users.Administrator;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Anses {
 
-    List<Resident> residents;
+    private List<Resident> residents;
+    private String filePath = "src/Persistencia/RegistroAnses";
 
-    public Anses(List<Resident> residents) {
-        this.residents = residents;
+    public Anses() throws IOException {
+        this.residents = getResidentsFromFile();
     }
 
     public boolean residentExists(String cuil, String phoneNumber){
@@ -20,5 +24,45 @@ public class Anses {
         return false;
     }
 
+    public List<Resident> getResidents(){
+        return residents;
+    }
+
     //metodos q levanten la info de los archivos txt
+
+    private List<Resident> getResidentsFromFile() throws IOException {
+        List<Resident> residentsAux = new ArrayList<>();
+
+        File file = new File(filePath);
+        BufferedReader br = new BufferedReader(new FileReader(file));
+
+        String userInfo;
+        while ((userInfo = br.readLine()) != null) {
+            String[] userParts = userInfo.split(",");
+            Resident resident = new Resident(userParts[0], userParts[1], userParts[2]);
+            residentsAux.add(resident);
+        }
+        return residentsAux;
+    }
+
+    public List<String> getAllLocations(){
+        List<String> allLocations = new ArrayList<>();
+        for (int i = 0; i < residents.size(); i++) {
+            if(!allLocations.contains(residents.get(i).getLocation())){
+                allLocations.add(residents.get(i).getLocation());
+            }
+        }
+        return allLocations;
+    }
+
+    public String getResidentLocation(String cuil){
+        for (int i = 0; i < residents.size(); i++) {
+            if(residents.get(i).getCuil().equals(cuil)){
+                return residents.get(i).getLocation();
+            }
+        }
+        return null;
+    }
+
+
 }

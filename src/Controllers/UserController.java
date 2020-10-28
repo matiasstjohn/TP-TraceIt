@@ -52,6 +52,15 @@ public class UserController {
         return null;
     }
 
+    public boolean citizenExists(String cuil){
+        for (int i = 0; i < citizens.size(); i++) {
+            if(citizens.get(i).getCuil().equals(cuil)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public boolean banUser(Citizen citizen){
         //seria return citizen.blocked = true
         return true;

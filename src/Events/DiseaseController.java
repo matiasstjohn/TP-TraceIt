@@ -20,9 +20,12 @@ public class DiseaseController {
 
     private List<Disease> diseases;
     private String filePath = "src/Persistencia/Diseases";
+    List<String> symptoms;
 
     public DiseaseController() throws IOException { // se rellenan con la info de los txt
         diseases = getDiseasesFromFile();
+        this.symptoms = new ArrayList<>();
+        updateSymptoms();
     }
 
     public List<Disease> getDiseases(){
@@ -31,7 +34,25 @@ public class DiseaseController {
 
     public void addDisease(Disease disease){
         diseases.add(disease);
+        updateSymptoms();
         writeDiseasesToFile();
+    }
+
+    public void updateSymptoms(){
+        List<String> symptomsAux = new ArrayList<>();
+        for (int i = 0; i < diseases.size(); i++) {
+            for (int j = 0; j < diseases.get(i).getSymptoms().size(); j++) {
+                if(!symptomsAux.contains(diseases.get(i).getSymptoms().get(j))){
+                    symptomsAux.add(diseases.get(i).getSymptoms().get(j));
+                }
+            }
+        }
+        symptoms.clear();
+        symptoms.addAll(symptomsAux);
+    }
+
+    public List<String> getSymptoms(){
+        return symptoms;
     }
 
     public Disease getDiseaseByName(String diseaseName){
