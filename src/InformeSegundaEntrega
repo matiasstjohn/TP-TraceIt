@@ -1,0 +1,26 @@
+Segunda entrega
+
+Los usuarios estan divididos en citizens y en administradores. Los admins pueden crear otros admins,
+dar de alta Diseases (sintomas relacionados) y auditar citizens bloqueados, entre otras cosas.
+Los citizens, pueden avisar si tuvieron sintomas y darlos de baja cuando quieran, tambien puede
+enviar meeting requests a otros citizens indicando la fecha y el cuil de las personas con las que estuvieron.
+Si a algun citizen lo rechazan 5 veces es automaticamente bloqueado. Para crear un citizen tiene que existir en Anses.
+Los citizens y admins se guardan en dos controllers que tienen cada uno una lista con los usuarios.
+ Y metodos para buscar usuarios segun distintos parametros, como el cuil por ejemplo.
+Las meetings tambien se guardan en un controller el cual tiene metodos para buscar las meetings en las que
+estuvo un citizen en especifico y las meetings requests que tiene.
+Las diseases tambien se almaecenan en un disease controller luego de ser creadas por los administradores.
+El disease controller tiene metodos para poder relacionar a los citizens con determinadas diseases.
+En el apartado de monitoreo por ahora implementamos los 3 eventos mas comunes por zona, para esto hicimos
+una clase zone que contiene una location los citizens que se encuentran ahi, y metodos para buscar los eventos mas
+comunes en la zona y un controller de zonas que conteinen todas las zonas También Implementamos algunas exceptions
+y persistencia en los administradores y en la base de datos de anses (solo se puede obtener informacion, no sacar).
+
+Cambios realizados para segunda entrega:
+
+Cambiamos la forma en que se administran los meetings, agregando el meeting controller.
+Implementamos persistencia en anses, en admin y en diseases
+Implementamos relacionse entre sintomas que tengan un citizen y diseases dadas de alta por un administrador.
+Se pueden conocer los 3 eventos más comunes por zona
+También hicimos algunos tests con Junit, y creamos exceptions.
+Cambios en algunos metodos y correciones en general
