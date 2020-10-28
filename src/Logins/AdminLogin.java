@@ -49,7 +49,7 @@ public class AdminLogin {
         // opciones que tiene el admin
         while (true) {
             adminMenu();
-            int a = Scanner.getInt("Select the action you want to preform: ");
+            int a = Scanner.getInt("Select the action you want to perform: ");
             switch (a) {
                 case 1:
                     createAdmin(administrator, adminController);

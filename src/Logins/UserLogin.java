@@ -7,6 +7,7 @@ import Encounters.Meeting;
 import Encounters.Date;
 import Events.DeclaredSymptom;
 import Events.DiseaseController;
+import Exceptions.InvalidDate;
 import Exceptions.UserAlreadyExistsException;
 import Users.*;
 import Util.Scanner;
@@ -119,7 +120,14 @@ public class UserLogin {
         Integer day = Scanner.getInt("Enter the day: ");
         Integer hours = Scanner.getInt("Enter the time: ");
 
-        Date date = new Date(month,day,hours);
+        Date date = null;
+        try {
+            date = new Date(month,day,hours);
+        } catch (InvalidDate e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+
         DeclaredSymptom declaredSymptom = new DeclaredSymptom(symptomName,date);
         citizen.addSymptom(declaredSymptom);
     }
@@ -195,7 +203,13 @@ public class UserLogin {
         Integer day = Scanner.getInt("Enter the day: ");
         Integer hours = Scanner.getInt("Enter the time: ");
 
-        Date date = new Date(month,day,hours);
+        Date date = null;
+        try {
+            date = new Date(month,day,hours);
+        } catch (InvalidDate invalidDate) {
+            System.out.println(invalidDate.getMessage());
+            return;
+        }
 
 
         for (int i = 0; i < size; i++) {
