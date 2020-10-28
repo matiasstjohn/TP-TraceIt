@@ -1,5 +1,6 @@
-package Events;
+package Controllers;
 
+import Events.Disease;
 import Users.Administrator;
 import Users.Citizen;
 
@@ -32,12 +33,14 @@ public class DiseaseController {
         return diseases;
     }
 
+    //agrega una disease
     public void addDisease(Disease disease){
         diseases.add(disease);
         updateSymptoms();
         writeDiseasesToFile();
     }
 
+    //actualiza los sintomas que puede haber en la lista de sintomas dependiendo las diseases que fueron dadas de alta
     public void updateSymptoms(){
         List<String> symptomsAux = new ArrayList<>();
         for (int i = 0; i < diseases.size(); i++) {
@@ -55,6 +58,7 @@ public class DiseaseController {
         return symptoms;
     }
 
+    //devuelve una disease pasandole el nombre
     public Disease getDiseaseByName(String diseaseName){
         for (int i = 0; i < diseases.size(); i++) {
             if(diseases.get(i).getDiseaseName().equals(diseaseName)){
@@ -64,6 +68,7 @@ public class DiseaseController {
         return null;
     }
 
+    //devuelve si un symptom existe o no
     public boolean symptomExists(String symptom){
         for (int i = 0; i < diseases.size(); i++) {
             for (int j = 0; j < diseases.get(i).getSymptoms().size(); j++) {
@@ -75,6 +80,8 @@ public class DiseaseController {
         return false;
     }
 
+
+    //relaciona a los citizens con las diseases dependiendo de sus sintomas
     public void matchCitizensWithDisease(List<Citizen> citizens){
         for (int k = 0; k < citizens.size(); k++) {
             Citizen citizen = citizens.get(k);
@@ -94,6 +101,8 @@ public class DiseaseController {
         }
     }
 
+
+    //persistencia en archivos
     public void writeDiseasesToFile(){
         try {
             FileWriter fw = new FileWriter(filePath);
@@ -106,7 +115,7 @@ public class DiseaseController {
         }
     }
 
-
+    //persistencia en archivos
     private List<Disease> getDiseasesFromFile() throws IOException {
         List<Disease> diseasesAux = new ArrayList<>();
 

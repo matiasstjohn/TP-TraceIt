@@ -13,6 +13,7 @@ public class MeetingController {
         meetings = new ArrayList<>();
     }
 
+    //devuelve las requests que todavia no acepto ni rechazo un citizen
     public List<Meeting> searchCitizenMeetingRequests(String cuil){
         List<Meeting> meetingsRecived = new ArrayList<>();
         for (int i = 0; i < meetings.size(); i++) {
@@ -23,6 +24,7 @@ public class MeetingController {
         return meetingsRecived;
     }
 
+    //busca las requests que un citizen acepto
     public List<Meeting> searchCitizenAcceptedRequests(String cuil){
         List<Meeting> meetingsAccepted = new ArrayList<>();
         for (int i = 0; i < meetings.size(); i++) {

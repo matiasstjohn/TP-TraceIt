@@ -24,6 +24,7 @@ public class Zone {
         return locationName;
     }
 
+    //agrega citizens a la zone
     public void checkCitizensInZone(Anses anses, UserController userController){
         List<Citizen> allCitizens = userController.getCitizens();
         for (int i = 0; i < allCitizens.size(); i++) {
@@ -35,6 +36,8 @@ public class Zone {
         }
     }
 
+
+    //devuelve una lista con los 3 symptoms mas comunes en la location
     public List<String> getMostCommonSymptoms(){
 
         HashMap<String, Integer> eventsInZone = new HashMap<>();

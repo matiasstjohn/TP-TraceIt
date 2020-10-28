@@ -4,8 +4,8 @@ import Anses.Anses;
 import Controllers.AdminController;
 import Controllers.MeetingController;
 import Controllers.UserController;
-import Encounters.ZoneController;
-import Events.DiseaseController;
+import Controllers.ZoneController;
+import Controllers.DiseaseController;
 import Logins.AdminLogin;
 import Logins.UserLogin;
 import Users.*;
@@ -55,12 +55,14 @@ public class TesterNuevo {
         Menu para seleccionar si se quiere ingresar al userLogin, al adminLogin o salir del programa
          */
         while(true){
+            System.out.println("");
             int action = Scanner.getInt("Select 1 to enter as a citizen, 2 to enter as an administrator, 3 to display common events by location or 4 to exit: ");
             if(action == 1){
                 userLogin.citizenInterfaze(userController, meetingController, anses, diseaseController);
             }else if(action == 2){
                 adminLogin.adminInterface(adminController, userController, diseaseController);
             }else if(action == 3){
+                //muestra los 3 symptoms mas comunse por zona
                 zoneController.updateCitizensInZones(anses,userController);
                 List<List<String>> commonSymoptomsByZone = zoneController.showThreeMostCommon();
                     for (int i = 0; i < commonSymoptomsByZone.size(); i++) {

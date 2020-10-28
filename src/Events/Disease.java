@@ -38,6 +38,7 @@ public class Disease {
         return symptoms;
     }
 
+    //se usa para la persistencia
     public String symptomsToString(){
         String symptomsString = "";
         for (int i = 0; i < symptoms.size(); i++) {

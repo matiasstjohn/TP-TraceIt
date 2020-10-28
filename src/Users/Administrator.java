@@ -1,7 +1,7 @@
 package Users;
 import Controllers.AdminController;
 import Events.Disease;
-import Events.DiseaseController;
+import Controllers.DiseaseController;
 import Exceptions.DiseaseAlreadyRegisteredException;
 import Exceptions.UserAlreadyExistsException;
 

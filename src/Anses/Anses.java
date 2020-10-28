@@ -29,7 +29,6 @@ public class Anses {
     }
 
     //metodos q levanten la info de los archivos txt
-
     private List<Resident> getResidentsFromFile() throws IOException {
         List<Resident> residentsAux = new ArrayList<>();
 
@@ -45,6 +44,7 @@ public class Anses {
         return residentsAux;
     }
 
+    //devuelve todas las locations que existen
     public List<String> getAllLocations(){
         List<String> allLocations = new ArrayList<>();
         for (int i = 0; i < residents.size(); i++) {
@@ -55,6 +55,7 @@ public class Anses {
         return allLocations;
     }
 
+    //busca la location de un citizen pasandole cuil
     public String getResidentLocation(String cuil){
         for (int i = 0; i < residents.size(); i++) {
             if(residents.get(i).getCuil().equals(cuil)){

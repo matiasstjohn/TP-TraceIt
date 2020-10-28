@@ -5,7 +5,7 @@ import Encounters.Date;
 import Encounters.Meeting;
 import Events.DeclaredSymptom;
 import Events.Disease;
-import Events.DiseaseController;
+import Controllers.DiseaseController;
 
 import java.util.ArrayList;
 import java.util.List;

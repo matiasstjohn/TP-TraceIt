@@ -1,7 +1,7 @@
 package Logins;
 
 import Events.Disease;
-import Events.DiseaseController;
+import Controllers.DiseaseController;
 import Controllers.AdminController;
 import Exceptions.DiseaseAlreadyRegisteredException;
 import Exceptions.UserAlreadyExistsException;
@@ -109,6 +109,7 @@ public class AdminLogin {
         System.out.println("Symptom registered correctly");
     }
 
+    //permite al admin remover un sintoma de una disease
     public void removeSymptomOfDisease(Administrator administrator, DiseaseController diseaseController){
         showDiseases(diseaseController);
         String disease = Scanner.getString("Enter a disease: ");
@@ -121,6 +122,7 @@ public class AdminLogin {
         System.out.println("Symptom removed correctly");
     }
 
+    //permite al admin agregar un sintoma al diseases
     public void addSymptomOfDisease(Administrator administrator, DiseaseController diseaseController){
         showDiseases(diseaseController);
         String disease = Scanner.getString("Enter a disease: ");

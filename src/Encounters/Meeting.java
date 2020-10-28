@@ -28,6 +28,7 @@ public class Meeting {
         return date;
     }
 
+    //confirma que un participante estuvo
     public void confirmParticipant(String citizenCuil){
         if(sendTo.contains(citizenCuil)){
             acceptedParticipants.add(citizenCuil);
@@ -35,6 +36,7 @@ public class Meeting {
         }
     }
 
+    //rechaza que un participante estuvo
     public void declineParticipation(String citizenCuil){
         if(sendTo.contains(citizenCuil)){
             sendTo.remove(citizenCuil);

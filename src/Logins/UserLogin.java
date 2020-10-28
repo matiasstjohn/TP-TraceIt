@@ -6,7 +6,7 @@ import Controllers.UserController;
 import Encounters.Meeting;
 import Encounters.Date;
 import Events.DeclaredSymptom;
-import Events.DiseaseController;
+import Controllers.DiseaseController;
 import Exceptions.InvalidDate;
 import Exceptions.UserAlreadyExistsException;
 import Users.*;
@@ -107,7 +107,7 @@ public class UserLogin {
         }
     }
 
-
+    //permite al citizen declarar que tiene un symptom
     public void declareSymptom(Citizen citizen, DiseaseController diseaseController){
         String symptomName = Scanner.getString("Proceeded symptom: ");
 
@@ -132,6 +132,7 @@ public class UserLogin {
         citizen.addSymptom(declaredSymptom);
     }
 
+    //permite al citizen declarar que ya no tiene un symptom
     public void removeDeclaredSymptom(Citizen citizen){
         String symptomName = Scanner.getString("Proceeded symptom: ");
         for (int i = 0; i < citizen.getSymptoms().size(); i++) {

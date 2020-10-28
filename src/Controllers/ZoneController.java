@@ -1,7 +1,8 @@
-package Encounters;
+package Controllers;
 
 import Anses.Anses;
 import Controllers.UserController;
+import Encounters.Zone;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +20,14 @@ public class ZoneController {
         return zones;
     }
 
+    //crea las zones
     public void createZones(Anses anses){
         for (int i = 0; i < anses.getAllLocations().size(); i++) {
             zones.add(new Zone(anses.getAllLocations().get(i)));
         }
     }
 
+    //se fija si hay nuevos citizens en la zone
     public void updateCitizensInZones(Anses anses, UserController userController){
         for (int i = 0; i < zones.size(); i++) {
             zones.get(i).checkCitizensInZone(anses,userController);
