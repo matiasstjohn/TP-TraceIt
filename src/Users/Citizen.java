@@ -3,6 +3,7 @@ package Users;
 import Controllers.MeetingController;
 import Encounters.Date;
 import Encounters.Meeting;
+import Encounters.Notification;
 import Events.DeclaredSymptom;
 import Events.Disease;
 import Controllers.DiseaseController;
@@ -24,6 +25,7 @@ public class Citizen {
     private int rejectedRequests;
     private List<DeclaredSymptom> declaredSymptoms;
     private List<Disease> confirmedDiseases;
+    private List<Notification> notifications;
 
     public Citizen(String phoneNumber, String cuil){
         this.phoneNumber = phoneNumber;
@@ -32,6 +34,7 @@ public class Citizen {
         declaredSymptoms = new ArrayList<>();
         rejectedRequests = 0;
         confirmedDiseases = new ArrayList<>();
+        notifications = new ArrayList<>();
     }
 
     //devuelve el phone number
@@ -71,7 +74,11 @@ public class Citizen {
 
     //agrega un sintoma a la lista de los sintomas que tiene
     public void addSymptom(DeclaredSymptom declaredSymptom){
-         declaredSymptoms.add(declaredSymptom);
+        declaredSymptoms.add(declaredSymptom);
+    }
+
+    public void recieveNotification(Notification notification){
+        notifications.add(notification);
     }
 
     public void checkIfDisease(DiseaseController diseaseController){
@@ -135,5 +142,32 @@ public class Citizen {
     public void declineMeeting(Meeting meeting){
         meeting.declineParticipation(this.getCuil());
     }
+
+    public boolean lastSymptomDate(Date date){
+        if(declaredSymptoms.size() == 0){
+            return false;
+        }
+        int dateDiff = declaredSymptoms.get(declaredSymptoms.size() - 1).getDate().compareDates(date);
+        if(dateDiff < 24){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public List<Notification> getNotifications(){
+        return notifications;
+    }
+
+    public List<String> allSymptomsByName(){
+        List<String> symptomsByName = new ArrayList<>();
+        for (int i = 0; i < declaredSymptoms.size(); i++) {
+            symptomsByName.add(declaredSymptoms.get(i).getSymptomName());
+        }
+        return symptomsByName;
+    }
+
+
+
 
 }

@@ -5,6 +5,7 @@ import Controllers.MeetingController;
 import Controllers.UserController;
 import Encounters.Meeting;
 import Encounters.Date;
+import Encounters.Notification;
 import Events.DeclaredSymptom;
 import Controllers.DiseaseController;
 import Exceptions.InvalidDate;
@@ -72,7 +73,7 @@ public class UserLogin {
             int a = Scanner.getInt("Select de action you want to perform: ");
             switch (a) {
                 case 1:
-                    declareSymptom(citizen, diseaseController);
+                    declareSymptom(citizen, diseaseController, meetingController, userController);
                     citizen.checkIfDisease(diseaseController);
                     break;
                 case 2:
@@ -100,6 +101,9 @@ public class UserLogin {
                     }
                     break;
                 case 8:
+                    displayNotifications(citizen);
+                    break;
+                case 9:
                     return;
                 default :
                     break;
@@ -107,8 +111,19 @@ public class UserLogin {
         }
     }
 
+    public void displayNotifications(Citizen citizen){
+        List<Notification> notifications = citizen.getNotifications();
+        for (int i = 0; i < notifications.size(); i++) {
+            System.out.print("Sender: " + notifications.get(i).getSenderCuil() + ". Symptoms: ");
+            for (int j = 0; j < notifications.get(i).getSymptoms().size(); j++) {
+                System.out.print("" + notifications.get(i).getSymptoms().get(j) + ", ");
+            }
+            System.out.print("\n");
+        }
+    }
+
     //permite al citizen declarar que tiene un symptom
-    public void declareSymptom(Citizen citizen, DiseaseController diseaseController){
+    public void declareSymptom(Citizen citizen, DiseaseController diseaseController, MeetingController meetingController, UserController userController){
         String symptomName = Scanner.getString("Proceeded symptom: ");
 
         if(!diseaseController.getSymptoms().contains(symptomName)){
@@ -129,6 +144,11 @@ public class UserLogin {
         }
 
         DeclaredSymptom declaredSymptom = new DeclaredSymptom(symptomName,date);
+
+        if(citizen.lastSymptomDate(date)){
+            meetingController.searchCitizenMeetings48Hours(date, citizen, symptomName, userController);
+        }
+
         citizen.addSymptom(declaredSymptom);
     }
 
@@ -257,7 +277,8 @@ public class UserLogin {
         System.out.println("5. Send meeting requests");
         System.out.println("6. Display attended meetings");
         System.out.println("7. Display related diseases");
-        System.out.println("8. Log out");
+        System.out.println("8. Display notifications");
+        System.out.println("9. Log out");
         System.out.println("************");
     }
 
