@@ -44,8 +44,8 @@ public class MeetingController {
             int dateDiff = meetings.get(i).getDate().compareDates(date);
             if(dateDiff < 48){
               Meeting meeting = meetings.get(i);
-                for (int j = 0; j < meeting.getSendTo().size(); j++) {
-                    Citizen reciever = userController.getCitizenByCuil(meeting.getSendTo().get(j));
+                for (int j = 0; j < meeting.getAcceptedParticipants().size(); j++) {
+                    Citizen reciever = userController.getCitizenByCuil(meeting.getAcceptedParticipants().get(j));
                     if(reciever.getCuil().equals(citizen.getCuil())){
                         continue;
                     }
