@@ -19,4 +19,9 @@ public class DeclaredSymptom {
     public Date getDate() {
         return date;
     }
+
+    public String toString(){
+        String symptom = "" + symptomName + ":" + date.toString() + "";
+        return symptom;
+    }
 }

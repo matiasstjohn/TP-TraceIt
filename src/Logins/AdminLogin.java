@@ -131,6 +131,7 @@ public class AdminLogin {
         }
         String symptomToAdd = Scanner.getString("Enter the symptom you want to add: ");
         administrator.addDiseaseSymptom(disease, symptomToAdd, diseaseController);
+        diseaseController.writeDiseasesToFile();
         System.out.println("Symptom added correctly");
     }
 

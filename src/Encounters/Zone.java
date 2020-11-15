@@ -60,10 +60,11 @@ public class Zone {
 
         List<String> threeMostCommon = new ArrayList<>();
 
-        int max = 0;
+        //int max = 0;
         String symptom = "nada";
         int i = 0;
         while(i < 3){
+            int max = 0;
             for (Map.Entry<String, Integer> entry : eventsInZone.entrySet()) {
                if(entry.getValue() > max){
                    symptom = entry.getKey();
@@ -77,6 +78,55 @@ public class Zone {
         }
 
         return threeMostCommon;
+    }
+
+    public List<String> getMostCommonSymptomsAux(){
+
+        List<EventsAux> eventsAux = new ArrayList<>();
+        List<String> events = new ArrayList<>();
+
+        for (int i = 0; i < citizens.size(); i++) {
+            Citizen citizen = citizens.get(i);
+            for (int j = 0; j < citizen.getSymptoms().size(); j++) {
+                String symptom = citizen.getSymptoms().get(j).getSymptomName();
+                if(!events.contains(symptom)){
+                    events.add(symptom);
+                    eventsAux.add(new EventsAux(symptom, 1));
+                }else if(events.contains(symptom)){
+                    //sumar uno al counter
+                    int index = events.indexOf(symptom);
+                    eventsAux.get(index).addCounter();
+                }
+            }
+        }
+
+        List<String> threeMostCommon = new ArrayList<>();
+
+        int counter = 0;
+
+        while(counter < 3){
+            int max = 0;
+            String symptom = " ";
+            for (int i = 0; i < eventsAux.size(); i++) {
+                if(eventsAux.get(i).getCounter() > max){
+                    max = eventsAux.get(i).getCounter();
+                    symptom = eventsAux.get(i).getSymptomName();
+                }
+            }
+            if(!threeMostCommon.contains(symptom)){
+                threeMostCommon.add(symptom);
+            }
+            int index = events.indexOf(symptom);
+            if(index != -1){
+                eventsAux.remove(index);
+                events.remove(index);
+            }
+
+            counter++;
+        }
+
+        return threeMostCommon;
+
     }
 
 

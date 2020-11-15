@@ -1,9 +1,10 @@
 package Users;
 
+import Anses.Anses;
 import Controllers.MeetingController;
-import Encounters.Date;
-import Encounters.Meeting;
-import Encounters.Notification;
+import Controllers.OutbreakController;
+import Controllers.UserController;
+import Encounters.*;
 import Events.DeclaredSymptom;
 import Events.Disease;
 import Controllers.DiseaseController;
@@ -34,6 +35,16 @@ public class Citizen {
         declaredSymptoms = new ArrayList<>();
         rejectedRequests = 0;
         confirmedDiseases = new ArrayList<>();
+        notifications = new ArrayList<>();
+    }
+
+    public Citizen(String phoneNumber, String cuil, boolean blocked, int rejectedRequests, List<DeclaredSymptom> declaredSymptoms, List<Disease> confirmedDiseases) {
+        this.phoneNumber = phoneNumber;
+        this.cuil = cuil;
+        this.blocked = blocked;
+        this.rejectedRequests = rejectedRequests;
+        this.declaredSymptoms = declaredSymptoms;
+        this.confirmedDiseases = confirmedDiseases;
         notifications = new ArrayList<>();
     }
 
@@ -72,6 +83,10 @@ public class Citizen {
         blocked = false;
     }
 
+    public boolean containsDisease(Disease disease){
+        return confirmedDiseases.contains(disease);
+    }
+
     //agrega un sintoma a la lista de los sintomas que tiene
     public void addSymptom(DeclaredSymptom declaredSymptom){
         declaredSymptoms.add(declaredSymptom);
@@ -81,7 +96,7 @@ public class Citizen {
         notifications.add(notification);
     }
 
-    public void checkIfDisease(DiseaseController diseaseController){
+    public void checkIfDisease(DiseaseController diseaseController, Date date, MeetingController meetingController, OutbreakController outbreakController, UserController userController, Anses anses){
         List<Disease> diseases = diseaseController.getDiseases();
         for (int i = 0; i < diseases.size(); i++) {
             int counter = 0;
@@ -95,10 +110,43 @@ public class Citizen {
             }
             if(counter >= 2 && !confirmedDiseases.contains(diseases.get(i))){
                 confirmedDiseases.add(diseases.get(i));
+                manageOutbreaks(meetingController, outbreakController, anses, date, diseases.get(i), userController);
             }else if(counter < 2 && confirmedDiseases.contains(diseases.get(i))){
                 confirmedDiseases.remove(diseases.get(i));
             }
         }
+    }
+
+    public void manageOutbreaks(MeetingController meetingController, OutbreakController outbreakController, Anses anses, Date date, Disease disease, UserController userController){
+        List<Citizen> relatedCitizens = meetingController.searchCitizensRelatedWithSameDiseaseIn48Hours(anses, date, this, disease, userController);
+        List<OutbreakAux> possibleOutbreaksAux = new ArrayList<>();
+        List<Outbreak> possibleOutbreaks = new ArrayList<>();
+        for (int i = 0; i < relatedCitizens.size(); i++) {
+            List<Outbreak> relatedCitizenOutbrakes = outbreakController.checkCitizenRelatedOutbreaks(relatedCitizens.get(i), disease);
+            for (int j = 0; j < relatedCitizenOutbrakes.size(); j++) {
+                if(!possibleOutbreaks.contains(relatedCitizenOutbrakes.get(j))){
+                    possibleOutbreaksAux.add( new OutbreakAux(relatedCitizenOutbrakes.get(j), relatedCitizens.get(i)));
+                    possibleOutbreaks.add(relatedCitizenOutbrakes.get(j));
+                }
+            }
+        }
+
+        /*if(!possibleOutbreaks.contains(relatedCitizenOutbrakes.get(j))){
+            possibleOutbreaks.add( new OutbreakAux(relatedCitizenOutbrakes.get(j), relatedCitizens.get(i)));
+        }*/
+
+        for (int i = 0; i < possibleOutbreaksAux.size(); i++) {
+           possibleOutbreaksAux.get(i).checkSecondGrade();
+           possibleOutbreaksAux.get(i).getOutbreak().addCitizen(this);
+           possibleOutbreaksAux.get(i).getOutbreak().changeLastDate(date);
+        }
+
+        if(possibleOutbreaksAux.size() == 0){
+            Outbreak newOutbreak = new Outbreak(disease, anses.getResidentLocation(this.getCuil()), date);
+            newOutbreak.addCitizen(this);
+            outbreakController.addOutbrake(newOutbreak);
+        }
+
     }
 
     public List<Disease> getConfirmedDiseases(){
@@ -167,7 +215,57 @@ public class Citizen {
         return symptomsByName;
     }
 
+    public void checkToRemoveDisease(DiseaseController diseaseController) {
+        List<Disease> diseases = diseaseController.getDiseases();
+        for (int i = 0; i < diseases.size(); i++) {
+            int counter = 0;
+            for (int j = 0; j < diseases.get(i).getSymptoms().size(); j++) {
+                String symptom = diseases.get(i).getSymptoms().get(j);
+                for (int k = 0; k < declaredSymptoms.size(); k++) {
+                    if(declaredSymptoms.get(k).getSymptomName().equals(symptom)){
+                        counter++;
+                    }
+                }
+            }
+            if(counter < 2 && confirmedDiseases.contains(diseases.get(i))){
+                confirmedDiseases.remove(diseases.get(i));
+            }
+        }
+    }
 
+    public boolean containsSymptom(String symptomName) {
+        for (int i = 0; i < declaredSymptoms.size(); i++) {
+            if(declaredSymptoms.get(i).getSymptomName().equals(symptomName)){
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public String declaredSymptomsToString(){
+        String symptomsString = "";
+        for (int i = 0; i < declaredSymptoms.size(); i++) {
+            if(symptomsString.equals("")){
+                symptomsString = symptomsString + declaredSymptoms.get(i).toString();
+            }else{
+                symptomsString = symptomsString + "," + declaredSymptoms.get(i).toString();
+            }
+
+        }
+        return symptomsString;
+    }
+
+    public String diseasesToString(){
+        String symptomsString = "";
+        for (int i = 0; i < confirmedDiseases.size(); i++) {
+            if(symptomsString.equals("")){
+                symptomsString = symptomsString + confirmedDiseases.get(i).getDiseaseName();
+            }else{
+                symptomsString = symptomsString + "," + confirmedDiseases.get(i).getDiseaseName();
+            }
+
+        }
+        return symptomsString;
+    }
 
 }

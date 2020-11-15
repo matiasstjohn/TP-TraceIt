@@ -20,6 +20,13 @@ public class Meeting {
         meetingController.addMeeting(this);
     }
 
+    public Meeting(String sender, Date date, List<String> acceptedParticipants, List<String> sendTo) {
+        this.date = date;
+        this.acceptedParticipants = acceptedParticipants;
+        this.sendTo = sendTo;
+        this.sender = sender;
+    }
+
     public String getSender(){
         return sender;
     }
@@ -50,6 +57,8 @@ public class Meeting {
     public List<String> getAcceptedParticipants(){
         return acceptedParticipants;
     }
+
+
 
 
 }

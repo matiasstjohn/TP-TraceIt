@@ -20,12 +20,12 @@ public class Date {
 
     //convieret la fecha a hora
     public Integer convertToHours(){
-        return ((this.month * 31 * 24) + (this.day * 24) + (this.hours));
+        return ((this.month - 1) * 31 * 24) + (this.day - 1) * 24 + this.hours;
     }
 
     //devuelve la diferencia entre dos fechas en horas
     public Integer compareDates(Date date){
-        return (this.convertToHours() - date.convertToHours());
+        return Math.abs(this.convertToHours() - date.convertToHours());
     }
 
     //chequea que una fecha se pueda crear
@@ -49,6 +49,19 @@ public class Date {
     }
 
     public String toString(){
-        return "" + month + "/" + day + " " + hours;
+        String monthStr = month.toString();
+        String dayStr = day.toString();
+        String hoursStr = hours.toString();
+
+        if(month <= 10){
+            monthStr = "0" + month;
+        }
+        if(day <= 10){
+           dayStr = "0" + day;
+        }
+        if(hours <= 10){
+            hoursStr = "0" + hours;
+        }
+        return "" + monthStr + "/" + dayStr + " " + hoursStr;
     }
 }

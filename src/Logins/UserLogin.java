@@ -2,6 +2,7 @@ package Logins;
 
 import Anses.Anses;
 import Controllers.MeetingController;
+import Controllers.OutbreakController;
 import Controllers.UserController;
 import Encounters.Meeting;
 import Encounters.Date;
@@ -26,7 +27,7 @@ public class UserLogin {
     Primer menu al seleccionar que se quiere ingresar como citizen.
     Da la opcion de crear una cuenta o de ingresar a una ya creada
      */
-    public void citizenInterfaze(UserController userController, MeetingController meetingController, Anses anses, DiseaseController diseaseController){
+    public void citizenInterfaze(UserController userController, MeetingController meetingController, Anses anses, DiseaseController diseaseController, OutbreakController outbreakController) throws InvalidDate {
         while (true) {
             loginMenu();
             int a = Scanner.getInt("Select de action you want to perform: ");
@@ -39,7 +40,7 @@ public class UserLogin {
                     }
                     break;
                 case 2:
-                    manageCitizen(userController, meetingController, diseaseController);
+                    manageCitizen(userController, meetingController, diseaseController, outbreakController, anses);
                     break;
                 case 3:
                     return;
@@ -52,7 +53,7 @@ public class UserLogin {
     /*
     Menu al seleccionar que se desea iniciar sesion como ciudadano
      */
-    public void manageCitizen(UserController userController, MeetingController meetingController, DiseaseController diseaseController){
+    public void manageCitizen(UserController userController, MeetingController meetingController, DiseaseController diseaseController, OutbreakController outbreakController, Anses anses) throws InvalidDate {
 
         //Busca un ciudadano
         Citizen citizen = searchCitizen(userController);
@@ -73,12 +74,10 @@ public class UserLogin {
             int a = Scanner.getInt("Select de action you want to perform: ");
             switch (a) {
                 case 1:
-                    declareSymptom(citizen, diseaseController, meetingController, userController);
-                    citizen.checkIfDisease(diseaseController);
+                    declareSymptom(citizen, diseaseController, meetingController, userController, outbreakController, anses);
                     break;
                 case 2:
-                    removeDeclaredSymptom(citizen);
-                    citizen.checkIfDisease(diseaseController);
+                    removeDeclaredSymptom(citizen, diseaseController);
                     break;
                 case 3:
                     for (int i = 0; i < citizen.getSymptoms().size(); i++) {
@@ -123,11 +122,16 @@ public class UserLogin {
     }
 
     //permite al citizen declarar que tiene un symptom
-    public void declareSymptom(Citizen citizen, DiseaseController diseaseController, MeetingController meetingController, UserController userController){
+    public void declareSymptom(Citizen citizen, DiseaseController diseaseController, MeetingController meetingController, UserController userController, OutbreakController outbreakController, Anses anses){
         String symptomName = Scanner.getString("Proceeded symptom: ");
 
         if(!diseaseController.getSymptoms().contains(symptomName)){
             System.out.println("That symptom is not related with a disease");
+            return;
+        }
+
+        if(citizen.containsSymptom(symptomName)){
+            System.out.println("Symptom already declared.");
             return;
         }
 
@@ -150,16 +154,19 @@ public class UserLogin {
         }
 
         citizen.addSymptom(declaredSymptom);
+        citizen.checkIfDisease(diseaseController, date, meetingController, outbreakController, userController, anses);
     }
 
     //permite al citizen declarar que ya no tiene un symptom
-    public void removeDeclaredSymptom(Citizen citizen){
+    public void removeDeclaredSymptom(Citizen citizen, DiseaseController diseaseController) throws InvalidDate {
         String symptomName = Scanner.getString("Proceeded symptom: ");
         for (int i = 0; i < citizen.getSymptoms().size(); i++) {
             if(citizen.getSymptoms().get(i).getSymptomName().equals(symptomName)){
                 citizen.removeSymptom(citizen.getSymptoms().get(i));
             }
         }
+        Date dateAux = new Date(1,1,1);
+        citizen.checkToRemoveDisease(diseaseController);
         System.out.println("Symptom removed correctly");
     }
 

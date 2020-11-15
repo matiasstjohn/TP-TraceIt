@@ -1,6 +1,7 @@
 package Controllers;
 
 import Events.Disease;
+import Main.TesterNuevo;
 import Users.Administrator;
 import Users.Citizen;
 
@@ -52,6 +53,7 @@ public class DiseaseController {
         }
         symptoms.clear();
         symptoms.addAll(symptomsAux);
+
     }
 
     public List<String> getSymptoms(){
@@ -107,7 +109,7 @@ public class DiseaseController {
         try {
             FileWriter fw = new FileWriter(filePath);
             for (Disease disease : diseases) {
-                fw.write(disease.getDiseaseName() + ";" + disease.symptomsToString() + "\n");
+                fw.write(disease.getDiseaseName() + ";" + TesterNuevo.listToString(disease.getSymptoms()) + "\n");
             }
             fw.close();
         } catch (IOException e) {
