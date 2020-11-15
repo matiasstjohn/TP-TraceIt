@@ -27,8 +27,8 @@ public class UserController {
 
     //constructor. El array list se rellenaria con la info de los txt
     public UserController(DiseaseController diseaseController) throws IOException, InvalidDate {
-        citizens = new ArrayList<>();
-        //citizens = getCitizensFromFile(diseaseController);
+        //citizens = new ArrayList<>();
+        citizens = getCitizensFromFile(diseaseController);
     }
 
     //devuelve los citizens
@@ -96,7 +96,7 @@ public class UserController {
             for (int i = 0; i < symptomsAux.size(); i++) {
                 String symptomInfo = (String) symptomsAux.get(i);
                 String[] symptomParts = symptomInfo.split(":");
-                DeclaredSymptom declaredSymptom = new DeclaredSymptom(symptomParts[0], toDate(symptomParts[1]));
+                DeclaredSymptom declaredSymptom = new DeclaredSymptom(symptomParts[0], MetodosPersistencia.toDate(symptomParts[1]));
                 declaredSymptoms.add(declaredSymptom);
             }
             }
@@ -114,12 +114,12 @@ public class UserController {
         return citizensAux;
     }
 
-    public static Date toDate(String date) throws InvalidDate {
+    /*public static Date toDate(String date) throws InvalidDate {
         Integer month =Integer.parseInt(String.valueOf(date.substring(0,2)));
         Integer day = Integer.parseInt(String.valueOf(date.substring(3,5)));
         Integer hours = Integer.parseInt(String.valueOf(date.substring(6,8)));
         return new Date(month,day,hours);
-    }
+    }*/
 
     public void writeCitizensToFile(){
         try {

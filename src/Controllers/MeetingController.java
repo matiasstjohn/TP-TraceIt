@@ -21,8 +21,8 @@ public class MeetingController {
     String filePath = "src/Persistencia/Meetings";
 
     public MeetingController() throws IOException, InvalidDate {
-        meetings = new ArrayList<>();
-        //meetings = getMeetingFromFile();
+        //meetings = new ArrayList<>();
+        meetings = getMeetingFromFile();
     }
 
     //devuelve las requests que todavia no acepto ni rechazo un citizen
@@ -108,19 +108,19 @@ public class MeetingController {
             if(userParts.length > 3) {
               sendTo = new ArrayList(Arrays.asList(userParts[3].split(",")));
             }
-            Meeting meeting = new Meeting(userParts[0], toDate(userParts[1]), accepted, sendTo);
+            Meeting meeting = new Meeting(userParts[0], MetodosPersistencia.toDate(userParts[1]), accepted, sendTo);
             meetingsAux.add(meeting);
         }
 
         return meetingsAux;
     }
 
-    public static Date toDate(String date) throws InvalidDate {
+    /*public static Date toDate(String date) throws InvalidDate {
         Integer month =Integer.parseInt(String.valueOf(date.substring(0,2)));
         Integer day = Integer.parseInt(String.valueOf(date.substring(3,5)));
         Integer hours = Integer.parseInt(String.valueOf(date.substring(6,8)));
         return new Date(month,day,hours);
-    }
+    }*/
 
     public void writeMeetingsToFile(){
         try {

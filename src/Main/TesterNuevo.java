@@ -26,7 +26,7 @@ public class TesterNuevo {
         MeetingController meetingController = new MeetingController();
         Anses anses = new Anses();
 
-        OutbreakController outbreakController = new OutbreakController();
+        OutbreakController outbreakController = new OutbreakController(diseaseController, userController);
 
         ZoneController zoneController = new ZoneController();
         zoneController.createZones(anses);
@@ -88,8 +88,9 @@ public class TesterNuevo {
                     }
                 }
             }else if(action == 5){
-                //userController.writeCitizensToFile();
-                //meetingController.writeMeetingsToFile();
+                userController.writeCitizensToFile();
+                meetingController.writeMeetingsToFile();
+                outbreakController.writeOutbreaksToFile();
                 return;
             }
         }

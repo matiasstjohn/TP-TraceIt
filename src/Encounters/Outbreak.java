@@ -26,6 +26,20 @@ public class Outbreak {
         this.location = location;
     }
 
+    public Outbreak(Disease disease, List<Citizen> citizens, boolean active, boolean secondGrade, Date starts, Date lastDate, String location) {
+        this.disease = disease;
+        this.citizens = citizens;
+        this.active = active;
+        this.secondGrade = secondGrade;
+        this.starts = starts;
+        this.lastDate = lastDate;
+        this.location = location;
+    }
+
+    public Boolean isSecondGrade(){
+        return secondGrade;
+    }
+
     public Disease getDisease() {
         return disease;
     }
@@ -37,6 +51,9 @@ public class Outbreak {
     public void addCitizen(Citizen citizen){
         if(!citizens.contains(citizen)){
             citizens.add(citizen);
+            if(citizens.size() == 5){
+                this.active = true;
+            }
         }
     }
 
@@ -46,7 +63,7 @@ public class Outbreak {
 
     public void activeSecondGrade(){
         secondGrade = true;
-        active = true;
+        //active = true;
     }
 
     public void changeLastDate(Date date){

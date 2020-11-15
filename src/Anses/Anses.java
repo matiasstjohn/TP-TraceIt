@@ -17,7 +17,7 @@ public class Anses {
 
     public boolean residentExists(String cuil, String phoneNumber){
         for (int i = 0; i < residents.size(); i++) {
-            if(residents.get(i).getCuil().equals(cuil) || residents.get(i).getPhoneNumber().equals(phoneNumber)){
+            if(residents.get(i).getCuil().equals(cuil) && residents.get(i).getPhoneNumber().equals(phoneNumber)){
                 return true;
             }
         }

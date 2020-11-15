@@ -211,7 +211,7 @@ public class UserLogin {
             System.out.println("" + (i+1) + "." + meeting.get(i).getSender());
         }
         int accept = Scanner.getInt("Select a request: ");
-        if(accept - 1 > meeting.size()){
+        if(accept - 1 >= meeting.size()){
             return;
         }
         int action = Scanner.getInt("Select 1 to accept or 2 to decline: ");
