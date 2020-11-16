@@ -33,26 +33,6 @@ public class TesterNuevo {
         UserLogin userLogin = new UserLogin();
         AdminLogin adminLogin = new AdminLogin();
 
-        //usuarios creados para testear (se llaman blocked pero no necesariamente estan bloqueados)
-
-        /*
-        Citizen blockedCitizen = new Citizen("111","111");
-        userController.addCitizen(blockedCitizen);
-        //blockedCitizen.blockUser();
-
-        Citizen blockedCitizen2 = new Citizen("222","222");
-        userController.addCitizen(blockedCitizen2);
-        //blockedCitizen2.blockUser();
-
-        Citizen blockedCitizen3 = new Citizen("333","333");
-        userController.addCitizen(blockedCitizen3);
-        //blockedCitizen3.blockUser();
-
-        Citizen blockedCitizen4 = new Citizen("444","444");
-        userController.addCitizen(blockedCitizen4);
-        //blockedCitizen3.blockUser();
-      */
-
         zoneController.updateCitizensInZones(anses, userController);
 
         /*

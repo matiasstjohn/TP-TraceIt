@@ -36,7 +36,7 @@ public class Zone {
         }
     }
 
-
+    //no se usa
     //devuelve una lista con los 3 symptoms mas comunes en la location
    /* public List<String> getMostCommonSymptoms(){
 
