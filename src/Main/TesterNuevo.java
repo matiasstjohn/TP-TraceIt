@@ -18,8 +18,6 @@ public class TesterNuevo {
         /*
         Crea los abm y un usuario administrador
          */
-
-
         AdminController adminController = new AdminController();
         DiseaseController diseaseController = new DiseaseController();
         UserController userController = new UserController(diseaseController);

@@ -115,13 +115,6 @@ public class MeetingController {
         return meetingsAux;
     }
 
-    /*public static Date toDate(String date) throws InvalidDate {
-        Integer month =Integer.parseInt(String.valueOf(date.substring(0,2)));
-        Integer day = Integer.parseInt(String.valueOf(date.substring(3,5)));
-        Integer hours = Integer.parseInt(String.valueOf(date.substring(6,8)));
-        return new Date(month,day,hours);
-    }*/
-
     public void writeMeetingsToFile(){
         try {
             FileWriter fw = new FileWriter(filePath);

@@ -38,7 +38,7 @@ public class ZoneController {
     public List<List<String>> showThreeMostCommon(){
         List<List<String>> commonSymptomsByLocation = new ArrayList<>();
         for (int i = 0; i < zones.size(); i++) {
-            commonSymptomsByLocation.add(zones.get(i).getMostCommonSymptomsAux());
+            commonSymptomsByLocation.add(zones.get(i).getMostCommonSymptoms());
         }
         return commonSymptomsByLocation;
         }

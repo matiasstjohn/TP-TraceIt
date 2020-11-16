@@ -38,7 +38,7 @@ public class Zone {
 
 
     //devuelve una lista con los 3 symptoms mas comunes en la location
-    public List<String> getMostCommonSymptoms(){
+   /* public List<String> getMostCommonSymptoms(){
 
         HashMap<String, Integer> eventsInZone = new HashMap<>();
 
@@ -78,9 +78,9 @@ public class Zone {
         }
 
         return threeMostCommon;
-    }
+    }*/
 
-    public List<String> getMostCommonSymptomsAux(){
+    public List<String> getMostCommonSymptoms(){
 
         List<EventsAux> eventsAux = new ArrayList<>();
         List<String> events = new ArrayList<>();

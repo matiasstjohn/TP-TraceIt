@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /*
-Se almacenan los usuarios. Falta implementar persistencia.
+Se almacenan los usuarios.
 La idea es que al  iniciar el programa la lista de citizens se lleme con los citizens guardados enlos archivos txt
 y al cerrarlo se vuelvan a guardar en esos archivos
 Los metodos para hacer esto estarian en esta misma clase
@@ -113,13 +113,6 @@ public class UserController {
 
         return citizensAux;
     }
-
-    /*public static Date toDate(String date) throws InvalidDate {
-        Integer month =Integer.parseInt(String.valueOf(date.substring(0,2)));
-        Integer day = Integer.parseInt(String.valueOf(date.substring(3,5)));
-        Integer hours = Integer.parseInt(String.valueOf(date.substring(6,8)));
-        return new Date(month,day,hours);
-    }*/
 
     public void writeCitizensToFile(){
         try {
