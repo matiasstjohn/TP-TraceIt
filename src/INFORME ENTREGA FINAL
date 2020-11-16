@@ -1,0 +1,30 @@
+
+En el siguiente informe explicaremos y justificaremos como diseñamos nuestro programa, con el objetivo de
+implementar un servicio para el monitoreo colaborativo de la propagación de eventos en una sociedad.
+
+Empezamos haciendo un diagrama como grupo para encontrar el enfoque y la dirección que le queríamos dar al proyecto.
+De esta manera teníamos una especie de blueprint para guiarnos cuando concretizamos los objetos, teniendo en cuenta que
+rol cumple cada uno y la relación entre ellos. Arrancamos desde la perspectiva del Citizen, pensando que tenía que
+poder hacer; esencialmente, registrar sus síntomas y reportar con quien estuvo en contacto recientemente. A partir
+de esto se crearon los symptoms y Meetings, y los Admin para regular y administrar estas acciones, dando de alta,
+agregando o sacando los síntomas para que los Citizens los puedan registrar.  Para que un Citizen pueda crear un
+usuario, su número de teléfono y cuil deben existir en un Resident, los cuales están guardados en una lista en ANSES.
+Para no darle demasiada responsabilidad al Admin, creamos un UserController que contiene a todos los Citizens y un
+AdminController que contiene a los Admin. En un principio los Citizens guardaban los Meetings, pero consideramos que
+no era su responsabilidad y por lo tanto implementamos un MeetingController.
+
+Luego se implementó un Disease como relación de symptoms, con su respectivo Controller que a su vez emplea una
+especie de diagnóstico, relacionando los síntomas registrados por el Citizen con un Disease bajo cierto criterio.
+Para monitorear los tres síntomas más comunes por zona, empezamos diseñando un Zone y su ZoneController, que contiene
+una lista con todas las zonas. Las Zones tienen un nombre y una lista de citizens, y puede agregar los Citizens usando
+al ANSES y al UserController, con el objetivo de poder encontrar los tres síntomas más comunes en la zona.
+
+Ya enfocándonos en la funcionalidad del programa, implementamos métodos en el MeetingController que alerten en tiempo
+real a los Citizens que estuvieron en contacto reciente con alguien que presenta síntomas a través de un Notification.
+En cuanto al rastreo de los brotes de contagio de cierto Disease, pensamos en un principio que cada vez que un Citizen
+se asocie con un Disease, se rastree ‘para atrás’: se recorre todos los contactos con quienes estuvo recientemente para
+ver si alguno también registró el mismo Disease y así sucesivamente. Sin embargo, decidimos encararlo de otra manera.
+Cuando el Citizen se asocia al Disease, primero busca los contactos que tienen la misma Disease, y se une al Brote
+asociado si es que hay uno. Si no, se crea un nuevo Brote, que se activa cuando se verifica que existe propagación
+de eventos de dos grados de distancia y por lo menos cinco personas contagiadas. El Brote tiene un Disease, una
+location y una lista de contagiados.
