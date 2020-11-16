@@ -1,5 +1,3 @@
-neumonia;tos,dolor,fiebre
-covid;tos,dolor
-hola;f,r
-chau;chau2,chau3
-sordera;tos,fiebre
+neumonia;tos,fiebre
+covid;fiebre,dolor
+prueba;prueba1,prueba2

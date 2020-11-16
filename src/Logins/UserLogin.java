@@ -71,7 +71,7 @@ public class UserLogin {
          */
         while (true) {
             citizenMenu();
-            int a = Scanner.getInt("Select de action you want to perform: ");
+            int a = Scanner.getInt("Select the action you want to perform: ");
             switch (a) {
                 case 1:
                     declareSymptom(citizen, diseaseController, meetingController, userController, outbreakController, anses);
